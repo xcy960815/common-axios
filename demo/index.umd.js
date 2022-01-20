@@ -4224,18 +4224,18 @@
         };
         /** 添加响应拦截器  **/
         axiosInstance.interceptors.response.use(function (response) {
-            if (response.data.code === 200 ||
-                response.data.statusCode === 200) {
-                return Promise.resolve(response);
-            }
-            else if (response.data.statusCode === 2) {
+            if (response.data.code === 200) {
+                // Message.success('请求成功')
                 return Promise.resolve(response);
             }
             else {
                 return Promise.reject(response.data.message);
             }
         }, function (error) {
-            if (axios.isCancel(error)) ;
+            if (axios.isCancel(error)) {
+                // Message.error('请求被取消')
+                console.error(new Date(), '请求被取消');
+            }
             else {
                 return Promise.reject(error);
             }
@@ -4246,3 +4246,4 @@
     return easyAxios;
 
 })));
+//# sourceMappingURL=index.umd.js.map

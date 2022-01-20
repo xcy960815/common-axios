@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { ElLoading, ElMessage } from 'element-plus'
+// @ts-ignore
+import { Message } from 'element-ui/lib/message.js'
 import { handleAddPending, handleRemovePending } from './config'
 
 import {
@@ -156,12 +157,8 @@ const easyAxios: EasyAxios = (axiosRequestConfig?) => {
     /** 添加响应拦截器  **/
     axiosInstance.interceptors.response.use(
         (response: AxiosResponse) => {
-            if (
-                response.data.code === 200 ||
-                response.data.statusCode === 200
-            ) {
-                return Promise.resolve(response)
-            } else if (response.data.statusCode === 2) {
+            if (response.data.code === 200) {
+                // Message.success('请求成功')
                 return Promise.resolve(response)
             } else {
                 return Promise.reject(response.data.message)
@@ -169,7 +166,8 @@ const easyAxios: EasyAxios = (axiosRequestConfig?) => {
         },
         (error: any) => {
             if (axios.isCancel(error)) {
-                // console.log('repeated request: ' + error.message)
+                // Message.error('请求被取消')
+                console.error(new Date(), '请求被取消')
             } else {
                 return Promise.reject(error)
             }

@@ -12,7 +12,7 @@ export {
  * 重写 AxiosRequestConfig
  * 添加 needLoading、loadingText、axiosDebounce 三个属性
  */
-export interface LocalAxiosRequestConfig {
+export declare interface LocalAxiosRequestConfig {
     url?: string
     method?: Method
     baseURL?: string
@@ -50,7 +50,7 @@ export interface LocalAxiosRequestConfig {
 /**
  * 重写 AxiosInstance 里面的请求方法的 config 类型
  */
-export interface LocalAxiosInstance
+export declare interface LocalAxiosInstance
     extends Pick<
         AxiosInstance,
         Exclude<
@@ -128,7 +128,7 @@ export interface LocalAxiosInstance
 /**
  * 执行方法返回的对象所包含的属性
  */
-export interface EasyAxiosInstance {
+export declare interface EasyAxiosInstance {
     get: (
         url: string,
         data?: any,
@@ -213,6 +213,6 @@ export interface EasyAxiosInstance {
         }
     ) => Promise<LocalAxiosInstance>
 }
-export type EasyAxios = (
+export declare type EasyAxios = (
     axiosRequestConfig?: LocalAxiosRequestConfig
 ) => EasyAxiosInstance
