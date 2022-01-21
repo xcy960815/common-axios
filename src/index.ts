@@ -1,6 +1,6 @@
 import axios from 'axios'
-// @ts-ignore
-import { Message } from 'element-ui/lib/message.js'
+import 'element-ui/lib/theme-chalk/index.css'
+import { Message } from 'element-ui'
 import { handleAddPending, handleRemovePending } from './config'
 
 import {
@@ -158,17 +158,18 @@ const easyAxios: EasyAxios = (axiosRequestConfig?) => {
     axiosInstance.interceptors.response.use(
         (response: AxiosResponse) => {
             if (response.data.code === 200) {
-                // Message.success('请求成功')
+                Message.success('请求成功')
                 return Promise.resolve(response)
             } else {
+                Message.error(`请求失败，错误原因：${response.data.message}`)
                 return Promise.reject(response.data.message)
             }
         },
         (error: any) => {
             if (axios.isCancel(error)) {
-                // Message.error('请求被取消')
-                console.error(new Date(), '请求被取消')
+                Message.error('请求被取消')
             } else {
+                Message.error(`请求失败，错误原因：${error}`)
                 return Promise.reject(error)
             }
         }

@@ -1,4 +1,6 @@
 import typescript from 'rollup-plugin-typescript2'
+import postcss from 'rollup-plugin-postcss'
+import autoprefixer from 'autoprefixer'
 import { terser } from 'rollup-plugin-terser'
 import { nodeResolve } from '@rollup/plugin-node-resolve' //将外部引入的js打包进来
 import nodePolyfills from 'rollup-plugin-polyfill-node'
@@ -11,38 +13,34 @@ import livereload from 'rollup-plugin-livereload'
 import vue from 'rollup-plugin-vue'
 
 const isProduction = process.env.NODE_ENV === 'production'
+const initConfig = () => {
+    const flexibleOutput = []
+    const flexiblePlugins = []
 
-export default {
-    input: './src/index.ts',
-    output: [
-        {
+    if (isProduction) {
+        // 打算发布的话将代码打包到dist文件夹内
+        flexibleOutput.push({
+            format: 'umd',
+            file: 'dist/index.umd.js',
+            name: 'easyAxios',
+            globals: {
+                vue: 'Vue',
+            },
+        })
+        // 发布压缩代码
+        flexiblePlugins.push(terser())
+    } else {
+        // 开发环境 将代码打包到demo文件夹内
+        flexibleOutput.push({
             format: 'umd',
             file: 'demo/index.umd.js',
             name: 'easyAxios',
-            sourcemap: true,
             globals: {
-                vue: 'vue',
+                vue: 'Vue',
             },
-        },
-    ],
-    external: ['vue'],
-    plugins: [
-        del({ targets: ['dist', 'demo/index.umd.js'] }),
-        commonjs(),
-        nodeResolve({ browser: true }),
-        nodePolyfills(),
-        vue({
-            css: true,
-            compileTemplate: true,
-        }),
-        // isProduction && terser(),
-        babel({
-            exclude: 'node_modules/**',
-            runtimeHelpers: true,
-        }),
-        json(),
-        // 开启服务
-        !isProduction &&
+        })
+        flexiblePlugins.push(
+            // 开启服务
             serve({
                 open: false,
                 host: 'localhost',
@@ -53,13 +51,41 @@ export default {
                     'Access-Control-Allow-Origin': '*',
                 },
             }),
-        // 热更新
-        !isProduction && livereload(),
+            // 热更新
+            livereload()
+        )
+    }
+    const defaultConfig = {
+        input: './src/index.ts',
+        exclude: ['vue'],
+        plugins: [
+            del({ targets: ['dist', 'demo/index.umd.js'] }),
+            babel({
+                exclude: 'node_modules/**',
+                extensions: ['.js', '.jsx', '.vue'],
+                babelHelpers: 'bundled',
+            }),
+            commonjs(),
+            nodeResolve({ browser: true, extensions: ['.vue', '.jsx', '.js'] }),
+            nodePolyfills(),
+            vue({
+                css: true,
+                compileTemplate: true,
+            }),
+            postcss({
+                plugins: [autoprefixer()],
+            }),
+            json(),
+            typescript({
+                exclude: 'node_modules/**',
+                useTsconfigDeclarationDir: true,
+                extensions: ['.ts', '.tsx'],
+            }),
+        ],
+    }
+    defaultConfig.output = flexibleOutput
+    defaultConfig.plugins = defaultConfig.plugins.concat(flexiblePlugins)
 
-        typescript({
-            exclude: 'node_modules/**',
-            useTsconfigDeclarationDir: true,
-            extensions: ['.js', '.ts', '.tsx'],
-        }),
-    ],
+    return defaultConfig
 }
+export default initConfig()
