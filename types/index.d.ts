@@ -128,7 +128,7 @@ export declare interface LocalAxiosInstance
 /**
  * 执行方法返回的对象所包含的属性
  */
-export declare interface EasyAxiosInstance {
+export declare interface CommonAxiosInstance {
     get: (
         url: string,
         data?: any,
@@ -213,6 +213,10 @@ export declare interface EasyAxiosInstance {
         }
     ) => Promise<LocalAxiosInstance>
 }
-export declare type EasyAxios = (
-    axiosRequestConfig?: LocalAxiosRequestConfig
-) => EasyAxiosInstance
+export declare type CreateAxios = (
+    axiosRequestConfig: LocalAxiosRequestConfig
+) => CommonAxiosInstance
+
+export declare function createAxios(
+    axiosRequestConfig: LocalAxiosRequestConfig
+): CommonAxiosInstance

@@ -5,8 +5,8 @@ import { handleAddPending, handleRemovePending } from './config'
 
 import {
     AxiosResponse,
-    EasyAxios,
-    EasyAxiosInstance,
+    CreateAxios,
+    CommonAxiosInstance,
     AxiosRequestConfig,
     LocalAxiosRequestConfig,
     LocalAxiosInstance,
@@ -23,7 +23,7 @@ import {
  * @param baseURL
  * 具体接口的 baseURL
  */
-const easyAxios: EasyAxios = (axiosRequestConfig?) => {
+export const createAxios: CreateAxios = (axiosRequestConfig) => {
     // loading 实例
     // let loadingInstance: import('element-plus/lib/el-loading/src/loading.type').ILoadingInstance
 
@@ -58,7 +58,7 @@ const easyAxios: EasyAxios = (axiosRequestConfig?) => {
         }
     )
 
-    const eastAxiosInstance: EasyAxiosInstance = {
+    const commonAxiosInstance: CommonAxiosInstance = {
         get: (
             url,
             params,
@@ -174,7 +174,5 @@ const easyAxios: EasyAxios = (axiosRequestConfig?) => {
             }
         }
     )
-    return eastAxiosInstance
+    return commonAxiosInstance
 }
-
-export default easyAxios

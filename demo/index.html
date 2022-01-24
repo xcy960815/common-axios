@@ -14,17 +14,18 @@
     hellow world
     <script src="./index.umd.js"></script>
     <script>
-        const commonAxiosInstance = commonAxios()
         console.log("commonAxios", commonAxios);
-        const handleOnceLoadData = async () => {
-            const result = await commonAxiosInstance.get("http://api.tianapi.com/lunar/index?key=d72e2bcd953521e372ebb6c2da255f8a&date=2018-12-08")
-            console.log('result', result);
-        }
-        const handleMoreLoadData = handleMoreLoadData => {
-            setInterval(async () => {
-                const result = await commonAxiosInstance.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
-            }, 0)
-        }
+        // const commonAxiosInstance = commonAxios()
+        
+        // const handleOnceLoadData = async () => {
+        //     const result = await commonAxiosInstance.get("http://api.tianapi.com/lunar/index?key=d72e2bcd953521e372ebb6c2da255f8a&date=2018-12-08")
+        //     console.log('result', result);
+        // }
+        // const handleMoreLoadData = handleMoreLoadData => {
+        //     setInterval(async () => {
+        //         const result = await commonAxiosInstance.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
+        //     }, 0)
+        // }
     </script>
 </body>
 

@@ -1,10 +1,10 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.commonAxios = factory());
-}(this, (function () { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.commonAxios = {}));
+}(this, (function (exports) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -73955,7 +73955,7 @@
      * @param baseURL
      * 具体接口的 baseURL
      */
-    var easyAxios = function (axiosRequestConfig) {
+    var createAxios = function (axiosRequestConfig) {
         // loading 实例
         // let loadingInstance: import('element-plus/lib/el-loading/src/loading.type').ILoadingInstance
         /* 创建axios实例 */
@@ -73978,7 +73978,7 @@
             // 对请求错误做些什么
             return Promise.reject(error);
         });
-        var eastAxiosInstance = {
+        var commonAxiosInstance = {
             get: function (url, params, _a) {
                 var _b = _a === void 0 ? {} : _a, baseURL = _b.baseURL, needLoading = _b.needLoading, loadingText = _b.loadingText, withCredentials = _b.withCredentials, axiosDebounce = _b.axiosDebounce;
                 return axiosInstance
@@ -74061,9 +74061,11 @@
                 return Promise.reject(error);
             }
         });
-        return eastAxiosInstance;
+        return commonAxiosInstance;
     };
 
-    return easyAxios;
+    exports.createAxios = createAxios;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
