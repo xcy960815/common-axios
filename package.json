@@ -1,13 +1,13 @@
 {
-    "name": "easy-axios",
-    "version": "1.0.0",
+    "name": "common-axios",
+    "version": "0.0.1",
     "description": "封装的axios",
     "main": "./dist/index.umd.js",
     "typings": "./types/index.d.ts",
     "scripts": {
         "dev": "NODE_ENV=development ENV=daily rollup -c -w",
         "build": "NODE_ENV=production ENV=prod rollup -c",
-        "upload": "npm run build && npm --registry https://registry.npmjs.org/ publish"
+        "upload": "npm --registry https://registry.npmjs.org/ publish --access public"
     },
     "keywords": [
         "easy-axios",

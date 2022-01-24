@@ -22,7 +22,7 @@ const initConfig = () => {
         flexibleOutput.push({
             format: 'umd',
             file: 'dist/index.umd.js',
-            name: 'easyAxios',
+            name: 'commonAxios',
             globals: {
                 vue: 'Vue',
             },
@@ -34,7 +34,7 @@ const initConfig = () => {
         flexibleOutput.push({
             format: 'umd',
             file: 'demo/index.umd.js',
-            name: 'easyAxios',
+            name: 'commonAxios',
             globals: {
                 vue: 'Vue',
             },
@@ -57,7 +57,7 @@ const initConfig = () => {
     }
     const defaultConfig = {
         input: './src/index.ts',
-        exclude: ['vue'],
+        // external: ['vue'],
         plugins: [
             del({ targets: ['dist', 'demo/index.umd.js'] }),
             babel({
@@ -85,7 +85,7 @@ const initConfig = () => {
     }
     defaultConfig.output = flexibleOutput
     defaultConfig.plugins = defaultConfig.plugins.concat(flexiblePlugins)
-
+    console.log('defaultConfig', defaultConfig)
     return defaultConfig
 }
 export default initConfig()
