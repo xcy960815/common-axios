@@ -6,26 +6,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.24.0/axios.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 
 <body>
     <button onclick="handleOnceLoadData()">请求一次数据</button>
     <button onclick="handleMoreLoadData()">请求多次数据</button>
-    hellow world
+    <button onclick="handleCancelMoreLoadData()">取消多次数据</button>
     <script src="./index.umd.js"></script>
     <script>
-        console.log("commonAxios", commonAxios);
-        // const commonAxiosInstance = commonAxios()
-        
-        // const handleOnceLoadData = async () => {
-        //     const result = await commonAxiosInstance.get("http://api.tianapi.com/lunar/index?key=d72e2bcd953521e372ebb6c2da255f8a&date=2018-12-08")
-        //     console.log('result', result);
-        // }
-        // const handleMoreLoadData = handleMoreLoadData => {
-        //     setInterval(async () => {
-        //         const result = await commonAxiosInstance.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
-        //     }, 0)
-        // }
+
+        const commonAxiosInstance = commonAxios.createAxios()
+
+        const handleOnceLoadData = async () => {
+            const result = await commonAxiosInstance.get(
+                "../static/data.json", null,
+                { needLoading: true, axiosDebounce: true, loadingText: "我爱我家" })
+            console.log('result', result);
+        }
+        let timerId = null
+        const handleMoreLoadData = handleMoreLoadData => {
+            timerId = setInterval(async () => {
+                const result = await commonAxiosInstance.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
+            }, 10)
+        }
+        const handleCancelMoreLoadData = () => {
+            window.clearInterval(timerId)
+        }
     </script>
 </body>
 

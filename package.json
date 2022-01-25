@@ -1,6 +1,6 @@
 {
     "name": "common-axios",
-    "version": "0.0.3",
+    "version": "0.0.6",
     "description": "封装的axios",
     "main": "./dist/index.umd.js",
     "typings": "./types/index.d.ts",
@@ -10,9 +10,8 @@
         "upload": "npm --registry https://registry.npmjs.org/ publish --access public"
     },
     "keywords": [
-        "easy-axios",
-        "axios",
-        "easy"
+        "common-axios",
+        "axios"
     ],
     "repository": {
         "type": "git",
@@ -34,6 +33,7 @@
         "@types/qs": "^6.9.7",
         "@vue/compiler-sfc": "^3.2.27",
         "autoprefixer": "^10.4.2",
+        "babel-plugin-component": "^1.1.1",
         "rollup": "^2.56.3",
         "rollup-plugin-babel": "^4.4.0",
         "rollup-plugin-delete": "^2.0.0",

@@ -1,45 +1,32 @@
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
-import { Message } from 'element-ui'
+// @ts-ignore
+import message from 'element-ui/packages/message/index.js'
 import { handleAddPending, handleRemovePending } from './config'
+import Vue from 'vue'
 
 import {
-    AxiosResponse,
     CreateAxios,
     CommonAxiosInstance,
-    AxiosRequestConfig,
     LocalAxiosRequestConfig,
-    LocalAxiosInstance,
-} from '../types/index'
+} from './types'
 /**
- * @param baseURL
- * 后端项目地址的域名+端口
- * @param url
- * 接口的详细地址
- * @param data
- * 请求参数
- * @param contentType
- * 请求头
- * @param baseURL
- * 具体接口的 baseURL
+ * @param LocalAxiosRequestConfig
  */
-export const createAxios: CreateAxios = (axiosRequestConfig) => {
+export const createAxios: CreateAxios = (localAxiosRequestConfig) => {
     // loading 实例
     // let loadingInstance: import('element-plus/lib/el-loading/src/loading.type').ILoadingInstance
 
     /* 创建axios实例 */
     const axiosInstance = axios.create({
-        ...axiosRequestConfig,
-        timeout:
-            axiosRequestConfig && axiosRequestConfig.timeout
-                ? axiosRequestConfig.timeout
-                : 3000,
+        ...localAxiosRequestConfig,
         withCredentials:
-            axiosRequestConfig &&
-            axiosRequestConfig.withCredentials !== undefined
-                ? axiosRequestConfig.withCredentials
+            localAxiosRequestConfig &&
+            localAxiosRequestConfig.withCredentials !== undefined
+                ? localAxiosRequestConfig.withCredentials
                 : true,
-    } as AxiosRequestConfig) as LocalAxiosInstance
+    } as AxiosRequestConfig)
+    // as LocalAxiosInstance
 
     /** 添加请求拦截器 **/
     axiosInstance.interceptors.request.use(
@@ -57,28 +44,49 @@ export const createAxios: CreateAxios = (axiosRequestConfig) => {
             return Promise.reject(error)
         }
     )
+    /** 添加响应拦截器  **/
+    axiosInstance.interceptors.response.use(
+        (response: AxiosResponse) => {
+            console.log('response', response)
 
+            if (response.data.code === 200) {
+                return Promise.resolve(response)
+            } else {
+                Vue.use(
+                    message({
+                        type: 'error',
+                        message: `请求失败，错误原因：${response.data.message}`,
+                    })
+                )
+
+                return Promise.reject(response.data.message)
+            }
+        },
+        (error: any) => {
+            if (axios.isCancel(error)) {
+                Vue.use(
+                    message({
+                        type: 'error',
+                        message: `请求被取消`,
+                    })
+                )
+            } else {
+                Vue.use(
+                    message({
+                        type: 'error',
+                        message: `请求失败，错误原因：${error}`,
+                    })
+                )
+                return Promise.reject(error)
+            }
+        }
+    )
     const commonAxiosInstance: CommonAxiosInstance = {
-        get: (
-            url,
-            params,
-            {
-                baseURL,
-                needLoading,
-                loadingText,
-                withCredentials,
-                axiosDebounce,
-            } = {}
-        ) => {
+        get: (url, params, config) => {
             return axiosInstance
                 .get(url, {
                     params,
-                    baseURL,
-                    withCredentials:
-                        withCredentials === undefined ? true : withCredentials,
-                    needLoading,
-                    loadingText,
-                    axiosDebounce,
+                    ...config,
                 })
                 .then((response) => {
                     return response.data
@@ -87,65 +95,65 @@ export const createAxios: CreateAxios = (axiosRequestConfig) => {
                     return error
                 })
         },
-        post: (
-            url,
-            data,
-            {
-                contentType,
-                baseURL,
-                needLoading,
-                loadingText,
-                withCredentials,
-                axiosDebounce,
-            } = {}
-        ) => {
-            contentType = contentType || 'application/json'
-            return axiosInstance
-                .post(url, {
-                    data,
-                    baseURL,
-                    withCredentials:
-                        withCredentials === undefined ? true : withCredentials,
-                    headers: {
-                        contentType,
-                        loadingText,
-                        needLoading,
-                        axiosDebounce,
-                    },
-                })
-                .then((response) => {
-                    return response.data
-                })
-                .catch((error) => {
-                    return error
-                })
-        },
-        delete: (
-            url,
-            data,
-            {
-                baseURL,
-                needLoading,
-                loadingText,
-                withCredentials,
-                contentType,
-                axiosDebounce,
-            } = {}
-        ) => {
-            contentType = contentType || 'application/json'
+        delete: (url, data, config) => {
             return axiosInstance
                 .delete(url, {
-                    baseURL,
                     data,
-                    withCredentials:
-                        withCredentials === undefined ? true : withCredentials,
-                    headers: {
-                        contentType,
-                        needLoading,
-                        loadingText,
-                        axiosDebounce,
-                    },
+                    ...config,
                 })
+                .then((response) => {
+                    return response.data
+                })
+                .catch((error) => {
+                    return error
+                })
+        },
+        head: (url, data, config) => {
+            return axiosInstance
+                .head(url, {
+                    data,
+                    ...config,
+                })
+                .then((response) => {
+                    return response.data
+                })
+                .catch((error) => {
+                    return error
+                })
+        },
+        post: (url, data, config) => {
+            return axiosInstance
+                .post(url, data, { ...config })
+                .then((response) => {
+                    return response.data
+                })
+                .catch((error) => {
+                    return error
+                })
+        },
+        put: (url, data, config) => {
+            return axiosInstance
+                .put(url, data, { ...config })
+                .then((response) => {
+                    return response.data
+                })
+                .catch((error) => {
+                    return error
+                })
+        },
+        patch: (url, data, config) => {
+            return axiosInstance
+                .patch(url, data, { ...config })
+                .then((response) => {
+                    return response.data
+                })
+                .catch((error) => {
+                    return error
+                })
+        },
+        options: (url, data, config) => {
+            return axiosInstance
+                .options(url, { data, ...config })
                 .then((response) => {
                     return response.data
                 })
@@ -154,25 +162,6 @@ export const createAxios: CreateAxios = (axiosRequestConfig) => {
                 })
         },
     }
-    /** 添加响应拦截器  **/
-    axiosInstance.interceptors.response.use(
-        (response: AxiosResponse) => {
-            if (response.data.code === 200) {
-                Message.success('请求成功')
-                return Promise.resolve(response)
-            } else {
-                Message.error(`请求失败，错误原因：${response.data.message}`)
-                return Promise.reject(response.data.message)
-            }
-        },
-        (error: any) => {
-            if (axios.isCancel(error)) {
-                Message.error('请求被取消')
-            } else {
-                Message.error(`请求失败，错误原因：${error}`)
-                return Promise.reject(error)
-            }
-        }
-    )
+
     return commonAxiosInstance
 }

@@ -11,7 +11,6 @@ import commonjs from '@rollup/plugin-commonjs' //将CommonJS模块转换为ES6, 
 import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 import vue from 'rollup-plugin-vue'
-
 const isProduction = process.env.NODE_ENV === 'production'
 const initConfig = () => {
     const flexibleOutput = []
@@ -25,6 +24,7 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 vue: 'Vue',
+                axios: 'axios',
             },
         })
         // 发布压缩代码
@@ -37,6 +37,7 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 vue: 'Vue',
+                axios: 'axios',
             },
         })
         flexiblePlugins.push(
@@ -57,7 +58,7 @@ const initConfig = () => {
     }
     const defaultConfig = {
         input: './src/index.ts',
-        // external: ['vue'],
+        external: ['axios', 'vue'],
         plugins: [
             del({ targets: ['dist', 'demo/index.umd.js'] }),
             babel({
@@ -75,6 +76,7 @@ const initConfig = () => {
             postcss({
                 plugins: [autoprefixer()],
             }),
+
             json(),
             typescript({
                 exclude: 'node_modules/**',
@@ -85,7 +87,7 @@ const initConfig = () => {
     }
     defaultConfig.output = flexibleOutput
     defaultConfig.plugins = defaultConfig.plugins.concat(flexiblePlugins)
-    console.log('defaultConfig', defaultConfig)
+
     return defaultConfig
 }
 export default initConfig()
