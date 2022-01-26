@@ -1,105 +1,66 @@
-import { AxiosRequestConfig, AxiosInstance } from 'axios'
+import {
+    AxiosRequestConfig,
+    AxiosInstance,
+    AxiosResponse,
+    Canceler,
+} from 'axios'
 
-/**
- * 重写 AxiosRequestConfig
- * 添加 needLoading、loadingText、axiosDebounce 三个属性
- */
-export interface LocalAxiosRequestConfig extends AxiosRequestConfig {
+export type LogMap = Map<string, Canceler>
+
+export type CreateLoadingNode = (loadingText: string | undefined) => void
+export interface AxiosRequestConfigs extends AxiosRequestConfig {
     needLoading?: boolean
     loadingText?: string
     axiosDebounce?: boolean
-}
-/**
- * 重写 AxiosInstance 里面的请求方法的 config 类型
- */
-export interface LocalAxiosInstance
-    extends Pick<
-        AxiosInstance,
-        Exclude<
-            keyof AxiosInstance,
-            'get' | 'post' | 'delet' | 'head' | 'options' | 'put' | 'patch'
-        >
-    > {
-    get(
-        url: string,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
-    // delete(
-    //     url: string,
-    //     config?: LocalAxiosRequestConfig
-    // ): Promise<{
-    //     code: number
-    //     message: string
-    //     data: any
-    // }>
-    head(
-        url: string,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
-    options(
-        url: string,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
-    post(
-        url: string,
-        data?: any,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
-    put(
-        url: string,
-        data?: any,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
-    patch(
-        url: string,
-        data?: any,
-        config?: LocalAxiosRequestConfig
-    ): Promise<{
-        code: number
-        message: string
-        data: any
-    }>
+    contentType?:
+        | 'application/json'
+        | 'application/x-www-form-urlencoded'
+        | ' multipart/form-data'
 }
 
-type AxiosHelper = (
+export type CreateAxiosInstance = (config: AxiosRequestConfigs) => AxiosInstance
+
+export type AxiosMethods =
+    | 'get'
+    | 'post'
+    | 'put'
+    | 'delete'
+    | 'head'
+    | 'put'
+    | 'patch'
+
+export type CreateParamHelper = (
+    axiosInstance: AxiosInstance,
+    method: AxiosMethods
+) => (
     url: string,
-    data?: any,
-    config?: LocalAxiosRequestConfig
-) => Promise<LocalAxiosInstance>
+    params?: any,
+    config?: AxiosRequestConfigs | undefined
+) => Promise<any>
+
+export type CreateDataHelper = (
+    axiosInstance: AxiosInstance,
+    method: AxiosMethods
+) => (
+    url: string,
+    data: any,
+    config: AxiosRequestConfigs | undefined
+) => Promise<any>
 
 /**
  * 执行方法返回的对象所包含的属性
  */
 export interface CommonAxiosInstance {
-    get: AxiosHelper
-    post: AxiosHelper
-    put: AxiosHelper
-    patch: AxiosHelper
-    delete: AxiosHelper
-    head: AxiosHelper
-    options: AxiosHelper
+    get: CreateParamHelper
+    // put: CreateDataHelper
+    // head: CreateDataHelper
+    // post: CreateDataHelper
+    // patch: CreateDataHelper
+
+    // delete: AxiosHelper
+    // options: AxiosHelper
 }
 
 export type CreateAxios = (
-    axiosRequestConfig: LocalAxiosRequestConfig
+    axiosRequestConfigs: AxiosRequestConfigs
 ) => CommonAxiosInstance

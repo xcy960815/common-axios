@@ -23,7 +23,6 @@ const initConfig = () => {
             file: 'dist/index.umd.js',
             name: 'commonAxios',
             globals: {
-                vue: 'Vue',
                 axios: 'axios',
             },
         })
@@ -31,15 +30,26 @@ const initConfig = () => {
         flexiblePlugins.push(terser())
     } else {
         // 开发环境 将代码打包到demo文件夹内
-        flexibleOutput.push({
-            format: 'umd',
-            file: 'demo/index.umd.js',
-            name: 'commonAxios',
-            globals: {
-                vue: 'Vue',
-                axios: 'axios',
+        flexibleOutput.push(
+            {
+                format: 'umd',
+                file: 'demo/index.umd.js',
+                name: 'commonAxios',
+                globals: {
+                    axios: 'axios',
+                    qs: 'qs',
+                },
             },
-        })
+            {
+                format: 'umd',
+                file: 'dist/index.umd.js',
+                name: 'commonAxios',
+                globals: {
+                    axios: 'axios',
+                    qs: 'qs',
+                },
+            }
+        )
         flexiblePlugins.push(
             // 开启服务
             serve({
@@ -58,7 +68,7 @@ const initConfig = () => {
     }
     const defaultConfig = {
         input: './src/index.ts',
-        external: ['axios', 'vue'],
+        external: ['axios', 'qs'],
         plugins: [
             del({ targets: ['dist', 'demo/index.umd.js'] }),
             babel({
