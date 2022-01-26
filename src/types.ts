@@ -29,38 +29,46 @@ export type AxiosMethods =
     | 'put'
     | 'patch'
 
-export type CreateParamHelper = (
-    axiosInstance: AxiosInstance,
-    method: AxiosMethods
-) => (
+export type AxiosRequestCallback = (
+    config: AxiosRequestConfigs
+) => AxiosRequestConfig
+
+export type AxiosResponseCallback = (
+    axiosResponse: AxiosResponse<{
+        code: number
+        message: string
+        data: any
+    }>
+) => Promise<{
+    code: number
+    message: string
+    data: any
+}>
+export type CreateParamHelper = <T = any, R = AxiosResponse<T>>(
     url: string,
     params?: any,
-    config?: AxiosRequestConfigs | undefined
-) => Promise<any>
+    config?: AxiosRequestConfigs
+) => Promise<R>
 
-export type CreateDataHelper = (
-    axiosInstance: AxiosInstance,
-    method: AxiosMethods
-) => (
+export type CreateDataHelper = <T = any, R = AxiosResponse<T>>(
     url: string,
-    data: any,
-    config: AxiosRequestConfigs | undefined
-) => Promise<any>
+    data?: any,
+    config?: AxiosRequestConfigs
+) => Promise<R>
 
 /**
  * 执行方法返回的对象所包含的属性
  */
-export interface CommonAxiosInstance {
+export interface AxiosHelpers {
     get: CreateParamHelper
-    // put: CreateDataHelper
-    // head: CreateDataHelper
-    // post: CreateDataHelper
-    // patch: CreateDataHelper
-
+    put: CreateDataHelper
+    head: CreateDataHelper
+    post: CreateDataHelper
+    patch: CreateDataHelper
     // delete: AxiosHelper
     // options: AxiosHelper
 }
 
 export type CreateAxios = (
     axiosRequestConfigs: AxiosRequestConfigs
-) => CommonAxiosInstance
+) => AxiosHelpers

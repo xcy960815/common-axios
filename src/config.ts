@@ -1,4 +1,4 @@
-import axios, { Canceler } from 'axios'
+import axios, { AxiosInstance, Canceler } from 'axios'
 import qs from 'qs'
 import {
     AxiosRequestConfigs,
@@ -6,7 +6,10 @@ import {
     CreateAxiosInstance,
     CreateParamHelper,
     CreateDataHelper,
+    AxiosRequestCallback,
+    AxiosResponseCallback,
     LogMap,
+    AxiosMethods,
 } from './types'
 
 /*遮罩层节点*/
@@ -51,20 +54,42 @@ export const createAxiosInstance: CreateAxiosInstance = (config) => {
                 : true,
     })
 }
-
-export const createParamHelper: CreateParamHelper = (axiosInstance, method) => {
-    return (url, params, config) => {
+/**
+ * 调用参数为params的axios请求
+ * @param axiosInstance
+ * @param method
+ * @returns
+ */
+export const createParamHelper = (
+    axiosInstance: AxiosInstance,
+    method: AxiosMethods
+) => {
+    return (url: string, params?: any, config?: AxiosRequestConfigs) => {
         return axiosInstance[method](url, {
             params,
             ...config,
         })
-            .then((response) => response)
-            .catch((error) => error)
+            .then((res) => {
+                console.log('调用参数为params的axios请求', res)
+                return res
+            })
+            .catch((error) => {
+                return error
+            })
     }
 }
 
-export const createDataHelper: CreateDataHelper = (axiosInstance, method) => {
-    return function (url, data, config) {
+/**
+ *
+ * @param axiosInstance axios 实例
+ * @param method 请求方法
+ * @returns
+ */
+export const createDataHelper = (
+    axiosInstance: AxiosInstance,
+    method: AxiosMethods
+) => {
+    return (url: string, data?: any, config?: AxiosRequestConfigs) => {
         return axiosInstance[method](url, {
             data,
             ...config,
@@ -73,7 +98,34 @@ export const createDataHelper: CreateDataHelper = (axiosInstance, method) => {
             .catch((error) => error)
     }
 }
-
+/**
+ * 请求前的配置
+ * @param config
+ * @returns config
+ */
+export const axiosRequestCallback: AxiosRequestCallback = (config) => {
+    // 如果需要遮罩层 那就创建遮罩层节点
+    // if (needLoading) createLoadingNode(loadingText)
+    const { axiosDebounce } = config
+    // 先判断是否需要防抖 如果需要 需要防抖的话 如果接口被取消 就不再需要遮罩层
+    if (axiosDebounce) {
+        handleRemoveResponseLog(config) // 在请求开始前，对之前的请求做检查取消操作
+        handleAddResponseLog(config) // 将当前请求添加到 pending 中
+    }
+    return config
+}
+/**
+ *
+ * @param axiosResponse 请求返回的参数
+ * @returns
+ */
+export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
+    if (axiosResponse.data.code === 200) {
+        return Promise.resolve(axiosResponse.data)
+    } else {
+        return Promise.reject(axiosResponse.data.message)
+    }
+}
 // 声明一个 Map 用于存储每个请求的标识 和 取消函数
 const logMap: LogMap = new Map()
 /**

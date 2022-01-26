@@ -21,10 +21,10 @@
     <script src="./index.umd.js"></script>
     <script>
 
-        const commonAxiosInstance = commonAxios.createAxios()
+        const axiosHelpers = commonAxios.createAxios()
 
         const handleOnceLoadData = async () => {
-            const result = await commonAxiosInstance.get(
+            const result = await axiosHelpers.get(
                 "../static/data.json", null,
                 { needLoading: true, axiosDebounce: true, loadingText: "我爱我家" })
             console.log('result', result);
@@ -32,7 +32,7 @@
         let timerId = null
         const handleMoreLoadData = handleMoreLoadData => {
             timerId = setInterval(async () => {
-                const result = await commonAxiosInstance.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
+                const result = await axiosHelpers.get("qqlykm.cn/api/ya/live.php", { channel: "sztv1" }, { axiosDebounce: true })
             }, 10)
         }
         const handleCancelMoreLoadData = () => {

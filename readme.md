@@ -24,12 +24,12 @@ import { createAxios } from 'common-axios'
 const axios = createAxios(/** @see http://www.axios-js.com/zh-cn/docs/#axios-create-config **/)
 
 // get
-const result1 = await commonAxiosInstance.get(<url>,<params>,<option>)
+const result1 = await axiosHelpers.get(<url>,<params>,<option>)
 
 // post
-const result2 = await commonAxiosInstance.post(<url>,<params>,<option>)
+const result2 = await axiosHelpers.post(<url>,<params>,<option>)
 
 // delete
-const result3 = await commonAxiosInstance.delete(<url>,<params>,<option>)
+const result3 = await axiosHelpers.delete(<url>,<params>,<option>)
 
 ```
