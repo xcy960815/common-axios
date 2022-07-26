@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Mask } from "@/core/create-mask"
+import { MessageDuration, MessagePosition } from "web-message"
 /**
  * axios的请求方法
  */
@@ -78,7 +79,7 @@ export type AxiosRequestConfigs =
     AxiosRequestContentType &
     {
         // 遮罩层实例
-        maskInstance?: typeof Mask
+        // maskInstance?: typeof Mask
 
         /* 是否创建遮罩层，默认为false */
         needLoading?: boolean
@@ -90,10 +91,13 @@ export type AxiosRequestConfigs =
         axiosDebounce?: boolean
 
         /* 消息持续时间 默认为2000毫秒 */
-        messageDuration?: number
+        messageDuration?: MessageDuration // number
 
         /* 消息提示位置 默认为left */
-        messagePosition?: 'left' | 'center' | 'right'
+        messagePosition?: MessagePosition //'left' | 'center' | 'right'
+
+        /* 鼠标悬停 消息组件不消失 */
+        messageHoverStop?: boolean
 
         /* 错误消息字段所对应的key 默认undefind */
         errorMessageContentKey?: string
@@ -107,6 +111,9 @@ export type AxiosRequestConfigs =
         /* 错误消息提示的自定义内容 优先级高于 errorMessageContentKey 所对应的内容 */
         errorMessageContent?: string
 
+        /* 鼠标悬停 错误消息组件不消失 */
+        errorMessageHoverStop?: boolean
+
         /* 成功消息字段所对应的key 默认undefind */
         successMessageContentKey?: string
 
@@ -118,6 +125,9 @@ export type AxiosRequestConfigs =
 
         /* 成功消息提示的自定义内容 优先级高于 successMessageContentKey 所对应的内容 */
         successMessageContent?: string
+
+        /* 鼠标悬停 错误消息组件不消失 */
+        successMessageHoverStop?: boolean
 
         /* 代表返回数据的key，支持a.b.c */
         /**

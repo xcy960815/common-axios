@@ -51,17 +51,20 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
         messageDuration,
         errorStatusKey,
         errorStatusKeyValue,
+        messageHoverStop,
         dataKey,
         errorMessageContentKey,
         errorMessageDuration,
         errorMessagePosition,
         errorMessageContent,
+        errorMessageHoverStop,
         successStatusKey,
         successStatusKeyValue,
         successMessageContentKey,
         successMessageDuration,
         successMessagePosition,
         successMessageContent,
+        successMessageHoverStop,
         axiosResponseCallback,
     } = axiosResponse.config as AxiosRequestConfigs
 
@@ -90,6 +93,7 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
                     messagePosition: errorMessagePosition || messagePosition || "left",
                     messageDuration: errorMessageDuration || messageDuration || 2000,
                     showClose: false,
+                    messageHoverStop: errorMessageHoverStop || messageHoverStop
                 })
 
             }
@@ -113,13 +117,13 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
                     axiosResponse.data
                 )
 
-
                 messageInstance.createMessage({
                     message: successMessageContent || messageValue,
                     messageType: 'success',
                     messagePosition: successMessagePosition || messagePosition || "left",
                     messageDuration: successMessageDuration || messageDuration || 2000,
                     showClose: false,
+                    messageHoverStop: successMessageHoverStop || messageHoverStop
                 })
             }
         }

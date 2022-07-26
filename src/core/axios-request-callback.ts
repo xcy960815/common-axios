@@ -22,9 +22,6 @@ export type AxiosErrorCallback = (error: Error) => Promise<Error>
 // axios  防抖
 import { AxiosDebounce } from './axios-debounce'
 
-import { Mask } from '@/core/create-mask'
-
-import { Message } from 'web-message'
 
 // 创建防抖实例
 const axiosDebounceInstance = new AxiosDebounce()
@@ -52,7 +49,7 @@ export const axiosRequestCallback: AxiosRequestCallback = (config) => {
     // 创建遮罩层
     if (needLoading || loadingText) {
         // 遮罩层实例
-        const maskInstance = new Mask()
+        // const maskInstance = new Mask()
 
         // maskInstance.createLoading(config)
 

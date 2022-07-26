@@ -1,5 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { AxiosResponse } from 'axios';
+import { MessageDuration } from 'web-message';
+import { MessagePosition } from 'web-message';
 
 export declare interface AxiosHelpers {
     get: ParamsInParamsHelper;
@@ -29,16 +31,19 @@ export declare type AxiosRequestConfigs = AxiosRequestConfig & SuccessStatusKeyA
     needLoading?: boolean;
     loadingText?: string;
     axiosDebounce?: boolean;
-    messageDuration?: number;
-    messagePosition?: 'left' | 'center' | 'right';
+    messageDuration?: MessageDuration;
+    messagePosition?: MessagePosition;
+    messageHoverStop?: boolean;
     errorMessageContentKey?: string;
     errorMessageDuration?: number;
     errorMessagePosition?: 'left' | 'center' | 'right';
     errorMessageContent?: string;
+    errorMessageHoverStop?: boolean;
     successMessageContentKey?: string;
     successMessageDuration?: number;
     successMessagePosition?: 'left' | 'center' | 'right';
     successMessageContent?: string;
+    successMessageHoverStop?: boolean;
     /**
      * 例如: 后端返回的数据是
      *
@@ -64,7 +69,7 @@ export declare type CreateAxios = (axiosRequestConfigs: AxiosRequestConfigs) => 
 
 /**
  * @param {AxiosRequestConfigs}initAxiosRequestConfig
- * @returns {}
+ * @returns {AxiosHelpers} {}
  */
 export declare const createAxios: CreateAxios;
 

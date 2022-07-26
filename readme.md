@@ -90,6 +90,9 @@ messageDuration?: number
 /* 消息提示位置 默认为left */
 messagePosition?: 'left' | 'center' | 'right'
 
+/* 鼠标hover message是否停留 默认为false*/
+ messageHoverStop?: boolean 
+
 /* 错误消息字段所对应的key 默认undefind */
 errorMessageContentKey?: string
 
@@ -102,6 +105,9 @@ errorMessagePosition?: 'left' | 'center' | 'right'
 /* 错误消息提示的自定义内容 优先级高于 errorMessageContentKey 所对应的内容 */
 errorMessageContent?: string
 
+/* 鼠标hover 错误message是否停留 默认为false*/
+errorMessageHoverStop?: boolean 
+
 /* 成功消息字段所对应的key 默认undefind */
 successMessageContentKey?: string
 
@@ -113,6 +119,9 @@ successMessagePosition?: 'left' | 'center' | 'right'
 
 /* 成功消息提示的自定义内容 优先级高于 successMessageContentKey 所对应的内容 */
 successMessageContent?: string
+
+/* 鼠标hover 成功message是否停留 默认为false*/
+successMessageHoverStop?: boolean 
 
 /* 代表返回数据的key，支持a.b.c */
 /**
@@ -165,7 +174,6 @@ const result = await axiosHelpers.delete(<url>,<{params:params,data:data}>,<conf
 
     1. common-axios 遮罩层在同步请求的时候的创建逻辑和销毁逻辑还存在bug;
 
-    2. 当用户开启axiosDebounce的时候，在页面离开的时候无法监听路由，在axios取消接口操作;
 
 ### 免责声明
 

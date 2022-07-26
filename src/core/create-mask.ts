@@ -73,27 +73,27 @@ export class Mask {
     createLoadingDom = (config: AxiosRequestConfigs): void => {
 
         // loading文本
-        const { loadingText } = config
+        // const { loadingText } = config
 
-        // 创建文本节点
-        const textDom = this.createDom("span", "'common-axios_mask'", loadingText)
+        // // 创建文本节点
+        // const textDom = this.createDom("span", "'common-axios_mask'", loadingText)
 
-        // 创建loading节点
-        const dottingDom = this.createDom('span', 'common-axios_dotting')
+        // // 创建loading节点
+        // const dottingDom = this.createDom('span', 'common-axios_dotting')
 
-        // 创建load box 为了将两个放在一个节点内
-        const loadingDom = this.createDom('div', 'common-axios_loading-box')
+        // // 创建load box 为了将两个放在一个节点内
+        // const loadingDom = this.createDom('div', 'common-axios_loading-box')
 
-        loadingDom.appendChild(textDom)
+        // loadingDom.appendChild(textDom)
 
-        loadingDom.appendChild(dottingDom)
+        // loadingDom.appendChild(dottingDom)
 
-        // 创建遮罩层节点
-        this.maskDom = this.createDom('div', 'common-axios_mask')
+        // // 创建遮罩层节点
+        // this.maskDom = this.createDom('div', 'common-axios_mask')
 
-        this.maskDom.appendChild(loadingDom)
+        // this.maskDom.appendChild(loadingDom)
 
-        document.body.appendChild(this.maskDom)
+        // document.body.appendChild(this.maskDom)
     }
 
     // 移除遮罩层
