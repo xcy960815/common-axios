@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import type { AxiosRequestConfigs } from '@/index'
+import { WebMaskLayer } from "web-mask-layer"
 /**
  * axios 请求后成功的回调
  */
@@ -22,7 +23,6 @@ export type AxiosErrorCallback = (error: Error) => Promise<Error>
 // axios  防抖
 import { AxiosDebounce } from './axios-debounce'
 
-
 // 创建防抖实例
 const axiosDebounceInstance = new AxiosDebounce()
 
@@ -35,26 +35,37 @@ export const axiosRequestCallback: AxiosRequestCallback = (config) => {
 
     const {
         needLoading,
-        loadingText,
         axiosDebounce,
         contentType,
         axiosRequestCallback,
+        background,
+        color,
+        target,
+        customClass,
+        opacity,
+        text
     } = config
 
     if (axiosRequestCallback && typeof axiosRequestCallback === 'function') axiosRequestCallback(config)
 
     // 先判断是否需要防抖 如果需要 需要防抖的话 如果接口被取消 就不再需要遮罩层
-    if (axiosDebounce) axiosDebounceInstance.handleAxiosDebounce(config)
+    if (axiosDebounce) {
+        axiosDebounceInstance.handleAxiosDebounce(config)
+    }
 
     // 创建遮罩层
-    if (needLoading || loadingText) {
-        // 遮罩层实例
-        // const maskInstance = new Mask()
+    if (needLoading || text) {
+        const webMaskLayer = new WebMaskLayer()
+        const webMaskLayerOption = {
+            text,
+            background,
+            color,
+            target,
+            customClass,
+            opacity,
+        }
 
-        // maskInstance.createLoading(config)
-
-        // config.maskInstance = maskInstance
-
+        webMaskLayer.createLoading(webMaskLayerOption)
     }
 
     // 修改content-type

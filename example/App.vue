@@ -8,7 +8,7 @@
         <button class="test-message-button waring" @click="handleOnceGetWaningFastApi">请求一个快接口且警告</button> -->
       </div>
       <div class="test-buttons">
-        <button class="test-button slow" @click="handleGetSlowTableData">请求一个慢接口测试遮罩层</button>
+        <!-- <button class="test-button slow" @click="handleGetSlowTableData">请求一个慢接口测试遮罩层</button> -->
         <button class="test-button slow" @click="handleSyncGetMoreSlowTableData">同步请求多个慢接口测试遮罩层</button>
         <button class="test-button slow" @click="handleASyncGetMoreSlowTableData">异步请求多个慢接口测试遮罩层</button>
 
@@ -27,27 +27,20 @@ import { createAxios, } from "common-axios"
 
 // 创建common-axios 实例
 const commonAxios = createAxios({
-  baseURL: "http://plutus-api.vdian.net",
+  baseURL: "http://localhost:3000/api",
   withCredentials: true,
-  // needLoading: true,
-  // loadingText: "数据加载中"
 })
 
 /**
  * 请求一个慢接口数据
  */
-const handleGetSlowTableData = async () => {
+const handleGetSlowTableData = async (loadingText:string) => {
 
-  const result = await commonAxios.post(
-    "/api/checkoutDetails/v1/data",
+  const result = await commonAxios.get(
+    "/employees/list",
     {
-      matterId: 69,
-      metaId: 82,
-      parentMetaId: 121,
-      queryParams: {},
-      type: 2,
-      uid: null,
-      version: "2022-04",
+      pageSize: 10,
+      pageNum: 1
     },
     {
       successStatusKey: "code",
@@ -55,45 +48,42 @@ const handleGetSlowTableData = async () => {
       successMessageContentKey: "status",
       successMessageDuration: 2000,
       successMessagePosition: "right",
-      axiosDebounce: true,
+      // axiosDebounce: true,
+      needLoading: true,
+      text: loadingText,
     }
   );
+  console.log("result", result);
 }
 
 /**
  * 同步请求多个慢接口
  */
 const handleSyncGetMoreSlowTableData = async () => {
-  await handleGetSlowTableData()
-  await handleGetSlowTableData()
-  await handleGetSlowTableData()
-  await handleGetSlowTableData()
+  await handleGetSlowTableData('同步请求多个慢接口1')
+  await handleGetSlowTableData('同步请求多个慢接口2')
+  await handleGetSlowTableData('同步请求多个慢接口3')
+  await handleGetSlowTableData('同步请求多个慢接口4')
 }
 
 /**
  * 异步请求多个慢接口
  */
 const handleASyncGetMoreSlowTableData = () => {
-  handleGetSlowTableData()
-  handleGetSlowTableData()
-  handleGetSlowTableData()
+  handleGetSlowTableData('异步请求多个慢接口1')
+  handleGetSlowTableData('异步请求多个慢接口2')
+  handleGetSlowTableData('异步请求多个慢接口3')
 }
 
 /**
  * 测试用的快接口 且报错 用于测试默认配置
  */
 const handleSyncGetErrorFastTableData = async (errorMessageContent: string, messageDuration?: number, errorMessageHoverStop?: boolean) => {
-  await commonAxios.post(
-    "/api/matter/record/v1/checkout/page",
+  await commonAxios.get(
+    "/employees/list",
     {
-      businessOwners: null,
-      checkoutStatus: "",
-      companyCodes: null,
-      financeOwners: null,
-      matterNameLike: "",
-      // pageNumber: 1,
-      // pageSize: 20,
-      // version: "2022-05",
+      pageSize: 10,
+      pageNum: 1
     },
     {
       messageDuration: messageDuration || 2000,

@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import { AxiosResponse } from 'axios';
+import { MaskLayerOption } from 'web-mask-layer';
 import { MessageDuration } from 'web-message';
 import { MessagePosition } from 'web-message';
 
@@ -16,20 +17,19 @@ export declare interface AxiosHelpers {
 /**
  * axios的请求方法
  */
-export declare type AxiosMethods = 'get' | 'post' | 'put' | 'delete' | 'head' | 'put' | 'patch' | 'options';
+export declare type AxiosMethods = 'get' | 'post' | 'put' | 'delete' | 'head' | 'patch' | 'options';
 
 /**
  * 自定义 axios 的配置
  * 添加 needLoading 是否需要遮罩层
- * 添加 loadingText 遮罩层展示的内容
+ * 添加 text 遮罩层展示的内容
  * 添加 axiosDebounce 接口是否防抖
  * 添加 contentType 接口的请求方式
  * 添加 axiosResponseCallback 代表响应拦截器成功的回调
  * 添加 axiosRequestCallback 代表请求拦截器成功的回调
  */
-export declare type AxiosRequestConfigs = AxiosRequestConfig & SuccessStatusKeyAndsuccessStatusKeyValue & ErrorStatusKeyAnderrorStatusKeyValue & AxiosRequestContentType & {
+export declare type AxiosRequestConfigs = AxiosRequestConfig & SuccessStatusKeyAndsuccessStatusKeyValue & ErrorStatusKeyAnderrorStatusKeyValue & AxiosRequestContentType & MaskLayerOption & {
     needLoading?: boolean;
-    loadingText?: string;
     axiosDebounce?: boolean;
     messageDuration?: MessageDuration;
     messagePosition?: MessagePosition;
@@ -84,8 +84,6 @@ export declare type ErrorStatusKeyAnderrorStatusKeyValue = {
     errorStatusKey: string;
     errorStatusKeyValue: string | number;
 };
-
-export declare type LoadingList = Map<string, Function>;
 
 /**
  * 参数在data字段中的声明

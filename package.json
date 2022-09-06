@@ -1,6 +1,6 @@
 {
     "name": "common-axios",
-    "version": "0.4.33",
+    "version": "0.4.34",
     "description": "基于axios重新封装的axios，支持原生遮罩层、原生message组件，代码比较轻量",
     "main": "dist/common-axios.umd.js",
     "module": "dist/common-axios.esm.js",
@@ -8,6 +8,7 @@
     "scripts": {
         "dev": "NODE_ENV=development ENV=daily rollup -c -w",
         "build": "NODE_ENV=production ENV=prod rollup -c  && api-extractor run && rm -rf ./temp",
+        "build:ts": "api-extractor run && rm -rf ./temp",
         "link": "npm link && npm link common-axios",
         "serve": "vue-cli-service serve",
         "upload": "npm run build npm --registry https://registry.npmjs.org/ publish --access public"
@@ -23,12 +24,13 @@
         "url": "git+https://github.com/ChongYu-Yease/common-axios.git"
     },
     "author": {
-        "name": "xuchongyu",
+        "name": "xcy960815",
         "email": "18763006837@163.com"
     },
     "license": "MIT",
     "peerDependencies": {
-        "axios": "^0.21.4"
+        "axios": "^0.21.4",
+        "web-message": "^0.0.6"
     },
     "devDependencies": {
         "@babel/core": "^7.16.7",
@@ -53,13 +55,13 @@
         "rollup-plugin-livereload": "^2.0.5",
         "rollup-plugin-polyfill-node": "^0.8.0",
         "rollup-plugin-postcss": "^4.0.2",
-        "rollup-plugin-serve": "^1.1.0",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2",
         "rollup-plugin-typescript2": "^0.31.1",
         "tslib": "^2.0.3",
         "typescript": "^4.5.5",
         "vue": "3.2.13",
-        "web-message": "0.0.6"
+        "web-mask-layer": "^0.0.8",
+        "web-message": "^0.0.6"
     }
 }

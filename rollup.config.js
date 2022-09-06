@@ -34,8 +34,8 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 axios: 'axios',
-                qs: 'qs',
-                "web-message": "web-message"
+                "web-message": "web-message",
+                "web-mask-layer": "web-mask-layer"
             },
         }, {
             format: 'esm',
@@ -43,8 +43,8 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 axios: 'axios',
-                qs: 'qs',
-                "web-message": "web-message"
+                "web-message": "web-message",
+                "web-mask-layer": "web-mask-layer"
             },
         })
 
@@ -58,8 +58,8 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 axios: 'axios',
-                qs: 'qs',
-                "web-message": "web-message"
+                "web-message": "web-message",
+                "web-mask-layer": "web-mask-layer"
             },
         }, {
             format: 'esm',
@@ -67,16 +67,11 @@ const initConfig = () => {
             name: 'commonAxios',
             globals: {
                 axios: 'axios',
-                qs: 'qs',
-                "web-message": "web-message"
+                "web-message": "web-message",
+                "web-mask-layer": "web-mask-layer"
             },
         })
-        flexiblePlugins.push(
-
-
-            // 热更新
-            livereload()
-        )
+        flexiblePlugins.push(livereload())
     }
     const defaultConfig = {
         input: './src/index.ts',
@@ -89,9 +84,9 @@ const initConfig = () => {
             }),
             alias({
                 entries: [{
-                        find: '@',
-                        replacement: path.resolve(__dirname, "./src")
-                    },
+                    find: '@',
+                    replacement: path.resolve(__dirname, "./src")
+                },
 
                 ]
             }),

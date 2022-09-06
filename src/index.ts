@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { Mask } from "@/core/create-mask"
 import { MessageDuration, MessagePosition } from "web-message"
+import { MaskLayerOption } from "web-mask-layer"
 /**
  * axios的请求方法
  */
@@ -10,11 +10,8 @@ export type AxiosMethods =
     | 'put'
     | 'delete'
     | 'head'
-    | 'put'
     | 'patch'
     | 'options'
-
-export type LoadingList = Map<string, Function>
 
 
 /**
@@ -66,7 +63,7 @@ export type AxiosRequestContentType = {
 /**
  * 自定义 axios 的配置
  * 添加 needLoading 是否需要遮罩层
- * 添加 loadingText 遮罩层展示的内容
+ * 添加 text 遮罩层展示的内容
  * 添加 axiosDebounce 接口是否防抖
  * 添加 contentType 接口的请求方式
  * 添加 axiosResponseCallback 代表响应拦截器成功的回调
@@ -77,15 +74,13 @@ export type AxiosRequestConfigs =
     SuccessStatusKeyAndsuccessStatusKeyValue &
     ErrorStatusKeyAnderrorStatusKeyValue &
     AxiosRequestContentType &
+    MaskLayerOption &
     {
         // 遮罩层实例
         // maskInstance?: typeof Mask
 
         /* 是否创建遮罩层，默认为false */
         needLoading?: boolean
-
-        /* 遮罩层展示的内容 默认为 "拼命加载中" */
-        loadingText?: string
 
         /* 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 */
         axiosDebounce?: boolean
@@ -99,7 +94,7 @@ export type AxiosRequestConfigs =
         /* 鼠标悬停 消息组件不消失 */
         messageHoverStop?: boolean
 
-        /* 错误消息字段所对应的key 默认undefind */
+        /* 错误消息字段所对应的key 默认undefined */
         errorMessageContentKey?: string
 
         /* 错误消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置  */

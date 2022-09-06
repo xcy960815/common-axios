@@ -1,7 +1,6 @@
 import axios, { Canceler } from 'axios'
-import * as qs from '@/utils/index'
+import { stringify } from '@/utils/stringify'
 import { AxiosRequestConfigs } from '@/index'
-
 
 export class AxiosDebounce {
     // axios 队列
@@ -19,7 +18,7 @@ export class AxiosDebounce {
      */
     private handleCreateAxiosKey(config: AxiosRequestConfigs): string {
         // 生成 关于这个axios的key 所有key的生成规则都一样 
-        return [config.method, config.url, qs.stringify(config.params), qs.stringify(config.data)].join('&')
+        return [config.method, config.url, stringify(config.params), stringify(config.data)].join('&')
     }
 
     /**

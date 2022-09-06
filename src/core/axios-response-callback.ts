@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { AxiosRequestConfigs } from '@/index'
+import { WebMaskLayer } from "web-mask-layer"
 /**
  * axios 请求后成功的回调
  */
@@ -19,20 +20,14 @@ export type AxiosRequestCallback = (
  */
 export type AxiosErrorCallback = (error: Error) => Promise<Error>
 
-
 import axios from 'axios'
-
-// import { Mask } from './create-mask'
-
-// 遮罩层实例
-// const maskInstance = new Mask()
 
 import { Message } from 'web-message'
 
 // 创建message实例
 const messageInstance = new Message()
 
-import { getValueByKeyInOpject } from "@/utils/index"
+import { getValueByKeyInOpject } from "@/utils/get-value-in-opject"
 
 
 /**
@@ -41,7 +36,9 @@ import { getValueByKeyInOpject } from "@/utils/index"
  * @returns
  */
 export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
-
+    // const { needLoading } = axiosResponse.config
+    const webMaskLayer = new WebMaskLayer()
+    webMaskLayer.closeLoading()
     // 关闭遮罩层
     // maskInstance.removeLoading(axiosResponse.config as AxiosRequestConfigs)
 
@@ -82,7 +79,7 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
         if (_errorStatusKeyValue == errorStatusKeyValue) {
             if (errorMessageContentKey) {
                 // 获取消息内容
-                const messageValue = getValueByKeyInOpject(
+                const messageValue = getValueByKeyInOpject<string>(
                     errorMessageContentKey,
                     axiosResponse.data
                 )
@@ -112,7 +109,7 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
         if (_successStatusKeyValue == successStatusKeyValue) {
             if (successMessageContentKey) {
                 // 获取消息内容
-                const messageValue = getValueByKeyInOpject(
+                const messageValue = getValueByKeyInOpject<string>(
                     successMessageContentKey,
                     axiosResponse.data
                 )
