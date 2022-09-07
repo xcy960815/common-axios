@@ -1,168 +1,80 @@
 ### common-axios
 
-### 安装方法
+> 一个基于 axios 封装的请求库,支持请求拦截、响应拦截、错误拦截，支持message弹窗提示，支持请求loading
 
+### 安装方法
 ```shell
 npm install common-axios -S
 ```
-OR
-```shell
-yarn add common-axios
 
-```
-
-### 设计目的
-
-    1.原生axios使用方法众多，且使用方法不够统一;
-
-    2.axios的拓展需要自己在项目自定义，看起来自由度比较高，但是配置相对比较繁琐;
-
-    3.提供了轻量级自定义创建遮罩层，自定义message组件;
-
-### 快速开始
+### 使用方法
 
 ```js
 // 导出创建方法
 import { createAxios } from 'common-axios'
-```
 
-### common-axios 配置
-
-```js
 /* 创建 axios 实例 */
 const axios =
     createAxios(/** @see http://www.axios-js.com/zh-cn/docs/#axios-create-config **/)
 ```
-
-```js
-
-除了上述地址包括配置之外还支持如下字段配置
-
-/* 是否创建遮罩层，默认为false needLoading 和 loadingText 只要配置了一个就可以生成遮罩层 注意：目前遮罩层针对同步请求的时候 遮罩层有闪烁的行为 不建议使用 */
-needLoading?: boolean
-
-/* 遮罩层展示的内容 默认为拼命加载中 needLoading 和 loadingText 只要配置了一个就可以生成遮罩层 注意：目前遮罩层针对同步请求的时候 遮罩层有闪烁的行为 不建议使用 */
-loadingText?: string
-
-/* 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 默认为false */
-axiosDebounce?: boolean
-
-/* 是否创建遮罩层，默认为false */
-needLoading?: boolean
-
-/* 遮罩层展示的内容 默认为 "拼命加载中" */
-loadingText?: string
-
-/* 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 */
-axiosDebounce?: boolean
-
-{
-    /* 代表失败的参数的key */
-    errorStatusKey?: never
-
-    /* 代表失败的参数的key所对应的值 */
-    errorStatusKeyValue?: never
-} | {
-    /* 代表失败的参数的key */
-    errorStatusKey: string
-
-    /* 代表失败的参数的key所对应的值 */
-    errorStatusKeyValue: string | number
-}
-
-{
-    /* 代表成功的参数的key */
-    successStatusKey?: never
-
-    /* 代表成功的参数的key所对应的值 */
-    successStatusKeyValue?: never
-} | {
-    /* 代表成功的参数的key */
-    successStatusKey: string
-
-    /* 代表成功的参数的key所对应的值 */
-    successStatusKeyValue: string | number
-}
-
-/* 消息持续时间 默认为2000毫秒 */
-messageDuration?: number
-
-/* 消息提示位置 默认为left */
-messagePosition?: 'left' | 'center' | 'right'
-
-/* 鼠标hover message是否停留 默认为false*/
- messageHoverStop?: boolean 
-
-/* 错误消息字段所对应的key 默认undefind */
-errorMessageContentKey?: string
-
-/* 错误消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置  */
-errorMessageDuration?: number
-
-/* 错误消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置  */
-errorMessagePosition?: 'left' | 'center' | 'right'
-
-/* 错误消息提示的自定义内容 优先级高于 errorMessageContentKey 所对应的内容 */
-errorMessageContent?: string
-
-/* 鼠标hover 错误message是否停留 默认为false*/
-errorMessageHoverStop?: boolean 
-
-/* 成功消息字段所对应的key 默认undefind */
-successMessageContentKey?: string
-
-/* 成功消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置 */
-successMessageDuration?: number
-
-/* 成功消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置 */
-successMessagePosition?: 'left' | 'center' | 'right'
-
-/* 成功消息提示的自定义内容 优先级高于 successMessageContentKey 所对应的内容 */
-successMessageContent?: string
-
-/* 鼠标hover 成功message是否停留 默认为false*/
-successMessageHoverStop?: boolean 
-
-/* 代表返回数据的key，支持a.b.c */
-/**
- * 例如: 后端返回的数据是
- *
- * {
- *  a: {
- *       b:{
- *          c:"我是c"
- *         }
- *     }
- *  }
- *
-*/
-dataKey?: string
-
-/* 拦截成功回调 用于全局拦截 */
-axiosResponseCallback?: (axiosResponse: AxiosResponse) => void
-
-/* 请求成功回调 用于全局拦截 */
-axiosRequestCallback?: (axiosRequestConfigs: AxiosRequestConfigs) => void
+> 除了上述地址包括配置之外还支持如下字段配置
+### axios config 拓展属性
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| axiosDebounce | 接口防抖<br/>同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 | boolean | false |
+| dataKey | 代表返回数据的key，支持a.b.c | string | - |
+| axiosResponseCallback | 拦截成功回调用于全局拦截 | function | (axiosResponse: AxiosResponse) => void |
+| axiosRequestCallback | 请求成功回调 用于全局拦截 | function | (axiosRequestConfigs: AxiosRequestConfigs) => void |
 
 
-```
+
+### 消息组件配置
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| <font color=yellow>errorStatusKey</font> | 代表失败的参数的key | string | -<br/>若<font color=yellow>errorStatusKey</font>存在，<font color=purple>errorStatusValue</font>也必须存在，反之亦然。<br/>当errorStatusKey在后端返回的数据中对应的值和errorStatusValue传递的值相等的话就会开启错误message组件 |
+| <font color=purple>errorStatusValue</font> | 代表失败的参数的value | string | -<br/>若<font color=purple>errorStatusValue</font>存在，<font color=yellow>errorStatusKey</font>也必须存在，反之亦然。<br/>当errorStatusKey在后端返回的数据中对应的值和errorStatusValue传递的值相等的话就会开启错误message组件 |
+| successStatusKey | 代表成功的参数的key | string | - |
+| successStatusValue | 代表成功的参数的value | string | - |
+| <font color=red>messageDuration</font> | 消息弹框持续时间 | number | - |
+| <font color=green>messagePosition</font> | 消息弹框提示位置 | 'left'、'center'、'right' | - |
+| <font color=blue>messageHoverStop</font> | 鼠标划入消息弹框是否停留 | boolean | false |
+| successMessageDuration | 成功消息弹框持续时间 | number | - <br/>如果没有配置该属性且配置了<font color=red>messageDuration</font>属性，则执行 <font color=red>messageDuration</font> 的配置 |
+| successMessagePosition | 成功消息提示的位置  | 'left'、'center'、'right' | 'left' <br/> 如果没有配置该属性 且配置了<font color=green>messagePosition</font> 属性 则执行 <font color=green>messagePosition</font> 的配置 |
+| successMessageHoverStop | 鼠标划入成功消息弹框是否停留 | boolean | false <br> 如果没有配置该配置，且配置了  <font color=blue>messageHoverStop</font> 属性 则执行  <font color=blue>messageHoverStop</font> 的配置 |
+| successMessageContentKey | 成功消息字段所对应的key | string | - <br/> 在后端返回的data字段中代表成功消息的key |
+| successMessageContent | 成功消息提示的自定义内容 | string | - <br/> 在后端返回的data字段中代表成功消息的key多对应的值 <br/> 自定义内容优先级高于 successMessageContentKey 所对应的内容|
+| errorMessageDuration | 错误消息持续时间 | number | - <br/>如果配置了<font color=red>messageDuration</font>，则会执行<font color=red>messageDuration</font>所对应的配置 |
+| errorMessagePosition | 错误消息提示的位置 | 'left'、'center'、'right' | 如果配置了<font color=green>messagePosition</font> 属性 则执行 <font color=green>messagePosition</font> 的配置 |
+| errorMessageHoverStop | 鼠标划入错误消息是否停留 | boolean | false <br> 如果没有配置该配置，且配置了  <font color=blue>messageHoverStop</font> 属性 则执行  <font color=blue>messageHoverStop</font> 的配置 |
+| errorMessageContentKey | 错误消息字段所对应的key值 | string | - <br> 在后端返回的data字段中代表错误消息的key |
+| errorMessageContent | 错误消息提示的自定义内容 | string | - <br/> 在后端返回的data字段中代表错误消息的key多对应的值 <br/> 错误消息提示的自定义内容优先级高于 errorMessageContentKey 所对应的内容 |
+
+### 遮罩层组件配置
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| text | 遮罩层文本 | string | -<br>如果有内容则会开启遮罩层 |
+| color | 遮罩层文本颜色 | string | -<br> |
+| target | 遮罩层覆盖的节点 | string（能让document.querySelector查找出内容的类名）、HTMLELEment | body节点 |
+| background | 遮罩层背景色 | string | "#000" |
+| opacity | 遮罩层背景色透明度 | string | "0.5" |
+| customClass | 遮罩层自定义类名 | string | - |
+
+
+
+
 
 ### 具体使用方法
 
 ```js
 /* get请求参数位置以及请求配置 【 head 】请求如同*/
 const result = await axiosHelpers.get(<url>,<params>,<config>)
-```
 
-```js
 /* post请求参数位置以及请求配置 【 put 】，【 patch 】请求如同 */
 const result = await axiosHelpers.post(<url>,<data>,<config>)
-```
 
-```js
 /* delete请求参数位置以及请求配置 【 option 】请求如同 */
 const result = await axiosHelpers.delete(<url>,<{params:params,data:data}>,<config>)
-
 ```
 
 ### 注意
@@ -172,7 +84,7 @@ const result = await axiosHelpers.delete(<url>,<{params:params,data:data}>,<conf
 
 ### TODO
 
-    1. common-axios 遮罩层在同步请求的时候的创建逻辑和销毁逻辑还存在bug;
+    1. common-axios 遮罩层在异步请求同步输出的时候的创建逻辑和销毁逻辑还存在bug;
 
 
 ### 免责声明

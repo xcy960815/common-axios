@@ -29,19 +29,14 @@ const messageInstance = new Message()
 
 import { getValueByKeyInOpject } from "@/utils/get-value-in-opject"
 
-
 /**
  * @desc 请求返回成功回调
  * @param {AxiosResponse} axiosResponse 
  * @returns
  */
 export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
-    // const { needLoading } = axiosResponse.config
     const webMaskLayer = new WebMaskLayer()
     webMaskLayer.closeLoading()
-    // 关闭遮罩层
-    // maskInstance.removeLoading(axiosResponse.config as AxiosRequestConfigs)
-
     // 获取配置
     const {
         messagePosition,
@@ -70,7 +65,6 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
 
     // 处理 错误 提示
     if (errorStatusKey && errorStatusKeyValue) {
-        // 获取代表失败的值
         const _errorStatusKeyValue = getValueByKeyInOpject(
             errorStatusKey,
             axiosResponse.data
