@@ -1,6 +1,6 @@
 ### common-axios
 
-> 一个基于 axios 封装的请求库,支持请求拦截、响应拦截、错误拦截，支持message弹窗提示，支持请求loading
+> 一个基于 axios 封装的请求库,支持请求拦截、响应拦截、错误拦截，支持message弹窗提示，支持请求loading,支持接口防抖。
 
 ### 安装方法
 ```shell

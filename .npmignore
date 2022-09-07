@@ -12,3 +12,4 @@ demo/
 vue.config.js
 temp/
 api-extractor.json
+pnpm-lock.yaml
