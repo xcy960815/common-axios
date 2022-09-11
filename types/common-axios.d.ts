@@ -21,7 +21,6 @@ export declare type AxiosMethods = 'get' | 'post' | 'put' | 'delete' | 'head' | 
 
 /**
  * 自定义 axios 的配置
- * 添加 needLoading 是否需要遮罩层
  * 添加 text 遮罩层展示的内容
  * 添加 axiosDebounce 接口是否防抖
  * 添加 contentType 接口的请求方式
@@ -29,20 +28,19 @@ export declare type AxiosMethods = 'get' | 'post' | 'put' | 'delete' | 'head' | 
  * 添加 axiosRequestCallback 代表请求拦截器成功的回调
  */
 export declare type AxiosRequestConfigs = AxiosRequestConfig & SuccessStatusKeyAndsuccessStatusKeyValue & ErrorStatusKeyAnderrorStatusKeyValue & AxiosRequestContentType & MaskLayerOption & {
-    needLoading?: boolean;
     axiosDebounce?: boolean;
     messageDuration?: MessageDuration;
     messagePosition?: MessagePosition;
     messageHoverStop?: boolean;
-    errorMessageContentKey?: string;
+    errorMessageKey?: string;
     errorMessageDuration?: number;
     errorMessagePosition?: 'left' | 'center' | 'right';
-    errorMessageContent?: string;
+    errorMessageValue?: string;
     errorMessageHoverStop?: boolean;
-    successMessageContentKey?: string;
+    successMessageKey?: string;
     successMessageDuration?: number;
     successMessagePosition?: 'left' | 'center' | 'right';
-    successMessageContent?: string;
+    successMessageValue?: string;
     successMessageHoverStop?: boolean;
     /**
      * 例如: 后端返回的数据是
@@ -75,14 +73,14 @@ export declare const createAxios: CreateAxios;
 
 /**
  * 错误 消息 配置
- * errorStatusKey 和 errorStatusKeyValue 要么全部都有 要么一个没有
+ * errorStatusKey 和 errorStatusValue 要么全部都有 要么一个没有
  */
 export declare type ErrorStatusKeyAnderrorStatusKeyValue = {
     errorStatusKey?: never;
-    errorStatusKeyValue?: never;
+    errorStatusValue?: never;
 } | {
     errorStatusKey: string;
-    errorStatusKeyValue: string | number;
+    errorStatusValue: string | number | boolean | Array<string | number | boolean>;
 };
 
 /**
@@ -105,14 +103,14 @@ export declare type ParamsInParamsOrDataHelper = <T = any>(url: string, params: 
 
 /**
  * 成功 消息 配置
- * successStatusKey 和 successStatusKeyValue 要么全部都有 要么一个没有
+ * successStatusKey 和 successStatusValue 要么全部都有 要么一个没有
  */
 export declare type SuccessStatusKeyAndsuccessStatusKeyValue = {
     successStatusKey?: never;
-    successStatusKeyValue?: never;
+    successStatusValue?: never;
 } | {
     successStatusKey: string;
-    successStatusKeyValue: string | number;
+    successStatusValue: string | number | boolean | Array<string | number | boolean>;
 };
 
 export { }

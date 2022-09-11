@@ -16,7 +16,7 @@ export type AxiosMethods =
 
 /**
  * 错误 消息 配置
- * errorStatusKey 和 errorStatusKeyValue 要么全部都有 要么一个没有
+ * errorStatusKey 和 errorStatusValue 要么全部都有 要么一个没有
  */
 export type ErrorStatusKeyAnderrorStatusKeyValue =
     | {
@@ -24,32 +24,32 @@ export type ErrorStatusKeyAnderrorStatusKeyValue =
         errorStatusKey?: never
 
         /* 代表失败的参数的key所对应的值 */
-        errorStatusKeyValue?: never
+        errorStatusValue?: never
     }
     | {
         /* 代表失败的参数的key */
         errorStatusKey: string
 
         /* 代表失败的参数的key所对应的值 */
-        errorStatusKeyValue: string | number
+        errorStatusValue: string | number | boolean | Array<string | number | boolean>
     }
 
 /**
  * 成功 消息 配置
- * successStatusKey 和 successStatusKeyValue 要么全部都有 要么一个没有
+ * successStatusKey 和 successStatusValue 要么全部都有 要么一个没有
  */
 export type SuccessStatusKeyAndsuccessStatusKeyValue = {
     /* 代表成功的参数的key */
     successStatusKey?: never
 
     /* 代表成功的参数的key所对应的值 */
-    successStatusKeyValue?: never
+    successStatusValue?: never
 } | {
     /* 代表成功的参数的key */
     successStatusKey: string
 
     /* 代表成功的参数的key所对应的值 */
-    successStatusKeyValue: string | number
+    successStatusValue: string | number | boolean | Array<string | number | boolean>
 }
 
 // axios content-type
@@ -62,7 +62,6 @@ export type AxiosRequestContentType = {
 
 /**
  * 自定义 axios 的配置
- * 添加 needLoading 是否需要遮罩层
  * 添加 text 遮罩层展示的内容
  * 添加 axiosDebounce 接口是否防抖
  * 添加 contentType 接口的请求方式
@@ -76,11 +75,6 @@ export type AxiosRequestConfigs =
     AxiosRequestContentType &
     MaskLayerOption &
     {
-        // 遮罩层实例
-        // maskInstance?: typeof Mask
-
-        /* 是否创建遮罩层，默认为false */
-        needLoading?: boolean
 
         /* 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 */
         axiosDebounce?: boolean
@@ -95,7 +89,7 @@ export type AxiosRequestConfigs =
         messageHoverStop?: boolean
 
         /* 错误消息字段所对应的key 默认undefined */
-        errorMessageContentKey?: string
+        errorMessageKey?: string
 
         /* 错误消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置  */
         errorMessageDuration?: number
@@ -103,14 +97,14 @@ export type AxiosRequestConfigs =
         /* 错误消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置  */
         errorMessagePosition?: 'left' | 'center' | 'right'
 
-        /* 错误消息提示的自定义内容 优先级高于 errorMessageContentKey 所对应的内容 */
-        errorMessageContent?: string
+        /* 错误消息提示的自定义内容 优先级高于 errorMessageKey 所对应的内容 */
+        errorMessageValue?: string
 
         /* 鼠标悬停 错误消息组件不消失 */
         errorMessageHoverStop?: boolean
 
         /* 成功消息字段所对应的key 默认undefind */
-        successMessageContentKey?: string
+        successMessageKey?: string
 
         /* 成功消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置 */
         successMessageDuration?: number
@@ -118,8 +112,8 @@ export type AxiosRequestConfigs =
         /* 成功消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置 */
         successMessagePosition?: 'left' | 'center' | 'right'
 
-        /* 成功消息提示的自定义内容 优先级高于 successMessageContentKey 所对应的内容 */
-        successMessageContent?: string
+        /* 成功消息提示的自定义内容 优先级高于 successMessageKey 所对应的内容 */
+        successMessageValue?: string
 
         /* 鼠标悬停 错误消息组件不消失 */
         successMessageHoverStop?: boolean

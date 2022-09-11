@@ -29,8 +29,8 @@ specifiers:
   tslib: ^2.0.3
   typescript: ^4.5.5
   vue: 3.2.13
-  web-mask-layer: ^0.0.4
-  web-message: ^0.0.6
+  web-mask-layer: ^0.0.8
+  web-message: 0.0.9
 
 devDependencies:
   '@babel/core': 7.18.6
@@ -61,8 +61,8 @@ devDependencies:
   tslib: 2.4.0
   typescript: 4.7.4
   vue: 3.2.13
-  web-mask-layer: 0.0.4
-  web-message: 0.0.6
+  web-mask-layer: 0.0.8
+  web-message: 0.0.9
 
 packages:
 
@@ -5777,12 +5777,12 @@ packages:
       defaults: 1.0.3
     dev: true
 
-  /web-mask-layer/0.0.4:
-    resolution: {integrity: sha512-x5VrnOLOHjm66DzP8oRhkmZCLL5Iy9lXVZ/W9HgDvC3NQ0F/TNF11ppjYd68lgBuVfdBfifKIFaYVceiEKKkxw==}
+  /web-mask-layer/0.0.8:
+    resolution: {integrity: sha512-sI2YRkxzw/6I4d06sgk4rmzoGwaPE50ySU0OzFugw+D6NtQIiqQiEYVk36NRsAUvooEZF+MhCnKspAW1Pd5Wpg==}
     dev: true
 
-  /web-message/0.0.6:
-    resolution: {integrity: sha512-UttSIiu2aWbzj4qzXs+aeronjB5UrJWaoi5KYXDBYGGgfvS0vz8NjieWW/ynl8DHU51PRFKb6IGBYaUvjHP2ow==}
+  /web-message/0.0.9:
+    resolution: {integrity: sha512-a6hzqmqr/Oie+x98I+WJSd37d26c7ulmh4mcfSOnxHzTBOS0yFLDawpb0y7d5/a5AQnHwbp6SdfXk72XC+ymQQ==}
     dev: true
 
   /webidl-conversions/3.0.1:

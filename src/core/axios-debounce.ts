@@ -47,8 +47,6 @@ export class AxiosDebounce {
             const cancel: Canceler = this.axiosQueue.get(key)!
             cancel(key)
             this.axiosQueue.delete(key)
-            // 如果 axios 被取消 就不再创建遮罩层了
-            // config.needLoading = false
         }
     }
 

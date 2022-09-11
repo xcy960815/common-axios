@@ -22,13 +22,24 @@ export type AxiosErrorCallback = (error: Error) => Promise<Error>
 
 import axios from 'axios'
 
-import { Message } from 'web-message'
+import { WebMessage, MessagePosition, MessageDuration, MessageType } from 'web-message'
 
 // 创建message实例
-const messageInstance = new Message()
+const messageInstance = WebMessage.getInstance()
 
 import { getValueByKeyInOpject } from "@/utils/get-value-in-opject"
 
+// 输出消息
+const outputMessage = (messageType: MessageType, message: string, messagePosition: MessagePosition, messageDuration: MessageDuration, messageHoverStop: boolean) => {
+    messageInstance.createMessage({
+        message,
+        messageType,
+        messagePosition,
+        messageDuration,
+        showClose: false,
+        messageHoverStop,
+    })
+}
 /**
  * @desc 请求返回成功回调
  * @param {AxiosResponse} axiosResponse 
@@ -42,20 +53,20 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
         messagePosition,
         messageDuration,
         errorStatusKey,
-        errorStatusKeyValue,
+        errorStatusValue,
         messageHoverStop,
         dataKey,
-        errorMessageContentKey,
+        errorMessageKey,
         errorMessageDuration,
         errorMessagePosition,
-        errorMessageContent,
+        errorMessageValue,
         errorMessageHoverStop,
         successStatusKey,
-        successStatusKeyValue,
-        successMessageContentKey,
+        successStatusValue,
+        successMessageKey,
         successMessageDuration,
         successMessagePosition,
-        successMessageContent,
+        successMessageValue,
         successMessageHoverStop,
         axiosResponseCallback,
     } = axiosResponse.config as AxiosRequestConfigs
@@ -64,63 +75,44 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
     if (axiosResponseCallback && typeof axiosResponseCallback == 'function') axiosResponseCallback(axiosResponse)
 
     // 处理 错误 提示
-    if (errorStatusKey && errorStatusKeyValue) {
-        const _errorStatusKeyValue = getValueByKeyInOpject(
-            errorStatusKey,
-            axiosResponse.data
-        )
-
-        if (_errorStatusKeyValue == errorStatusKeyValue) {
-            if (errorMessageContentKey) {
+    if (errorStatusKey && errorStatusValue) {
+        const _errorStatusKeyValue = getValueByKeyInOpject<string | boolean | number>(errorStatusKey, axiosResponse.data)
+        if (errorMessageKey) {
+            if ((Array.isArray(errorStatusValue) && errorStatusValue.includes(_errorStatusKeyValue)) || (errorStatusValue === _errorStatusKeyValue)) {
                 // 获取消息内容
-                const messageValue = getValueByKeyInOpject<string>(
-                    errorMessageContentKey,
-                    axiosResponse.data
+                const messageValue = getValueByKeyInOpject<string>(errorMessageKey, axiosResponse.data)
+                outputMessage(
+                    'error',
+                    errorMessageValue || messageValue,
+                    errorMessagePosition || messagePosition || "left",
+                    errorMessageDuration || messageDuration || 2000,
+                    errorMessageHoverStop || messageHoverStop || false
                 )
-
-                messageInstance.createMessage({
-                    message: errorMessageContent || messageValue,
-                    messageType: 'error',
-                    messagePosition: errorMessagePosition || messagePosition || "left",
-                    messageDuration: errorMessageDuration || messageDuration || 2000,
-                    showClose: false,
-                    messageHoverStop: errorMessageHoverStop || messageHoverStop
-                })
-
             }
         }
+
     }
 
     // 处理 成功 提示
-    if (successStatusKey && successStatusKeyValue) {
-
+    if (successStatusKey && successStatusValue) {
         // 获取代表成功的值
-        const _successStatusKeyValue = getValueByKeyInOpject(
-            successStatusKey,
-            axiosResponse.data
-        )
-
-        if (_successStatusKeyValue == successStatusKeyValue) {
-            if (successMessageContentKey) {
+        const _successStatusKeyValue = getValueByKeyInOpject<string | boolean | number>(successStatusKey, axiosResponse.data)
+        if (Array.isArray(successStatusValue) && successStatusValue.includes(_successStatusKeyValue) || (_successStatusKeyValue == successStatusValue)) {
+            if (successMessageKey) {
                 // 获取消息内容
-                const messageValue = getValueByKeyInOpject<string>(
-                    successMessageContentKey,
-                    axiosResponse.data
+                const messageValue = getValueByKeyInOpject<string>(successMessageKey, axiosResponse.data)
+                outputMessage(
+                    'success',
+                    successMessageValue || messageValue,
+                    successMessagePosition || messagePosition || "left",
+                    successMessageDuration || messageDuration || 2000,
+                    successMessageHoverStop || messageHoverStop || false
                 )
-
-                messageInstance.createMessage({
-                    message: successMessageContent || messageValue,
-                    messageType: 'success',
-                    messagePosition: successMessagePosition || messagePosition || "left",
-                    messageDuration: successMessageDuration || messageDuration || 2000,
-                    showClose: false,
-                    messageHoverStop: successMessageHoverStop || messageHoverStop
-                })
             }
         }
     }
 
-    // 返回数据
+    // 处理返回数据
     if (dataKey) {
         return Promise.resolve(
             getValueByKeyInOpject(dataKey, axiosResponse.data)
@@ -137,19 +129,21 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
  */
 export const axiosResponseErrorCallback: AxiosErrorCallback = (error) => {
     if (axios.isCancel(error)) {
-        messageInstance.createMessage({
-            message: `检测到${error.message}多次重复请求，接口已取消`,
-            messageType: 'error',
-            messageDuration: 2000,
-            messagePosition: "center",
-        })
+        outputMessage(
+            'error',
+            `检测到${error.message}多次重复请求，接口已取消`,
+            "center",
+            2000,
+            false
+        )
     } else {
-        messageInstance.createMessage({
-            message: error.message,
-            messageType: 'error',
-            messageDuration: 2000,
-            messagePosition: "center",
-        })
+        outputMessage(
+            'error',
+            error.message,
+            "center",
+            2000,
+            false
+        )
     }
     return Promise.reject(error)
 }

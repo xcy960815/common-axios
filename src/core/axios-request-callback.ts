@@ -34,7 +34,6 @@ const axiosDebounceInstance = new AxiosDebounce()
 export const axiosRequestCallback: AxiosRequestCallback = (config) => {
 
     const {
-        needLoading,
         axiosDebounce,
         contentType,
         axiosRequestCallback,
@@ -54,7 +53,7 @@ export const axiosRequestCallback: AxiosRequestCallback = (config) => {
     }
 
     // 创建遮罩层
-    if (needLoading || text) {
+    if (text) {
         const webMaskLayer = new WebMaskLayer()
         const webMaskLayerOption = {
             text,
