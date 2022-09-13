@@ -46,7 +46,7 @@ const outputMessage = (messageType: MessageType, message: string, messagePositio
  * @returns
  */
 export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
-    const webMaskLayer = new WebMaskLayer()
+    const webMaskLayer = WebMaskLayer.getInstance()
     webMaskLayer.closeLoading()
     // 获取配置
     const {
@@ -75,7 +75,7 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
     if (axiosResponseCallback && typeof axiosResponseCallback == 'function') axiosResponseCallback(axiosResponse)
 
     // 处理 错误 提示
-    if (errorStatusKey && errorStatusValue) {
+    if ((errorStatusKey && errorStatusValue) || (Array.isArray(errorStatusValue) && errorStatusKey && errorStatusValue.length)) {
         const _errorStatusKeyValue = getValueByKeyInOpject<string | boolean | number>(errorStatusKey, axiosResponse.data)
         if (errorMessageKey) {
             if ((Array.isArray(errorStatusValue) && errorStatusValue.includes(_errorStatusKeyValue)) || (errorStatusValue === _errorStatusKeyValue)) {
@@ -94,7 +94,7 @@ export const axiosResponseCallback: AxiosResponseCallback = (axiosResponse) => {
     }
 
     // 处理 成功 提示
-    if (successStatusKey && successStatusValue) {
+    if ((successStatusKey && successStatusValue) || (Array.isArray(successStatusValue) && successStatusKey && successStatusValue.length)) {
         // 获取代表成功的值
         const _successStatusKeyValue = getValueByKeyInOpject<string | boolean | number>(successStatusKey, axiosResponse.data)
         if (Array.isArray(successStatusValue) && successStatusValue.includes(_successStatusKeyValue) || (_successStatusKeyValue == successStatusValue)) {

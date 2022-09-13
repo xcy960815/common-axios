@@ -1,6 +1,7 @@
 
 src/
 .gitignore
+.idea/
 package-lock.json
 tsconfig.json
 rollup.config.js 
