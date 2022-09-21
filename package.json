@@ -1,6 +1,6 @@
 {
     "name": "common-axios",
-    "version": "0.5.0",
+    "version": "0.5.01",
     "description": "基于axios重新封装的axios，支持原生遮罩层、原生message组件，代码比较轻量",
     "main": "dist/common-axios.umd.js",
     "module": "dist/common-axios.esm.js",
@@ -23,7 +23,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ChongYu-Yease/common-axios.git"
+        "url": "git+https://github.com/xcy960815/common-axios.git"
     },
     "author": {
         "name": "xcy960815",
