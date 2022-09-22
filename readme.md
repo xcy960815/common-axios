@@ -1,4 +1,14 @@
-### common-axios
+
+<p align="center">
+    <font size="6">common-axios</font>
+</p>
+<br/>
+
+[![npm](https://img.shields.io/npm/v/common-axios.svg)](https://www.npmjs.com/package/common-axios)
+[![npm](https://img.shields.io/npm/dm/common-axios.svg)](https://www.npmjs.com/package/common-axios)
+[![npm](https://img.shields.io/npm/l/common-axios.svg)](https://www.npmjs.com/package/common-axios)
+[![axios](https://img.shields.io/badge/axios-0.2.x-brightgreen.svg)](https://github.com/axios/axios)
+<br/>
 
 > 一个基于 axios 封装的请求库,支持请求拦截、响应拦截、错误拦截，支持message弹窗提示，支持请求loading,支持接口防抖。
 
