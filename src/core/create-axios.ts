@@ -12,13 +12,13 @@ export type CreateAxiosInstance = (
 
 /**
  * @desc 创建axios实例
- * @param config
+ * @param {AxiosRequestConfigs} config
  * return axios实例
  */
 export const createAxiosInstance: CreateAxiosInstance = (config) => {
   return axios.create({
     ...config,
-    //默认开启携带cookie
+    // 默认开启携带cookie
     withCredentials:
       config && config.withCredentials !== undefined
         ? config.withCredentials

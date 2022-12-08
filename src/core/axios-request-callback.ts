@@ -16,7 +16,7 @@ export type AxiosRequestCallback = (
 ) => AxiosRequestConfigs;
 
 /**
- * axios 请求前 请求后的错误回调 的声明
+ * @desc axios 请求前 请求后的错误回调 的声明
  */
 export type AxiosErrorCallback = (error: Error) => Promise<Error>;
 
@@ -27,7 +27,7 @@ import { AxiosDebounce } from "./axios-debounce";
 const axiosDebounceInstance = new AxiosDebounce();
 
 /**
- * 请求前成功回调
+ * @desc 请求前成功回调
  * @param {AxiosRequestCallback} config
  * @returns {AxiosRequestCallback} config
  */
@@ -79,7 +79,7 @@ export const axiosRequestCallback: AxiosRequestCallback = (config) => {
 };
 
 /**
- * 请求前错误回调
+ * @desc 请求前错误回调
  * @param error 错误信息
  * @returns error
  */
