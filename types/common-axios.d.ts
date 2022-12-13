@@ -1,116 +1,200 @@
-import { AxiosRequestConfig } from 'axios';
-import { AxiosResponse } from 'axios';
-import { MaskLayerOption } from 'web-mask-layer';
-import { MessageDuration } from 'web-message';
-import { MessagePosition } from 'web-message';
+import type { AxiosInstance } from "axios";
+import { AxiosRequestConfig } from "axios";
+import { AxiosResponse } from "axios";
+import { MaskLayerOption } from "web-mask-layer";
+import { MessageDuration } from "web-message";
+import { MessagePosition } from "web-message";
 
 export declare interface AxiosHelpers {
-    get: ParamsInParamsHelper;
-    head: ParamsInParamsHelper;
-    options: ParamsInParamsOrDataHelper;
-    delete: ParamsInParamsOrDataHelper;
-    put: ParamsInDataHelper;
-    post: ParamsInDataHelper;
-    patch: ParamsInDataHelper;
+  get: ParamsInParamsHelper;
+  head: ParamsInParamsHelper;
+  options: ParamsInParamsOrDataHelper;
+  delete: ParamsInParamsOrDataHelper;
+  put: ParamsInDataHelper;
+  post: ParamsInDataHelper;
+  patch: ParamsInDataHelper;
 }
 
 /**
- * axios的请求方法
+ * @desc axios的请求方法
  */
-export declare type AxiosMethods = 'get' | 'post' | 'put' | 'delete' | 'head' | 'patch' | 'options';
+export declare type AxiosMethods =
+  | "get"
+  | "post"
+  | "put"
+  | "delete"
+  | "head"
+  | "patch"
+  | "options";
+
+export declare type AxiosRequestConfigs = AxiosRequestConfig &
+  SuccessStatusKeyValue &
+  ErrorStatusKeyValue &
+  MaskLayerOption &
+  ConstomConfigs;
+
+export declare interface AxiosResponses<T = any> extends AxiosResponse<T> {
+  config: AxiosRequestConfigs;
+}
+
+export declare class CommonAxios {
+  static axiosInstance: AxiosInstance;
+  static createAxios: CreateAxios;
+}
 
 /**
- * 自定义 axios 的配置
- * 添加 text 遮罩层展示的内容
- * 添加 axiosDebounce 接口是否防抖
- * 添加 contentType 接口的请求方式
- * 添加 axiosResponseCallback 代表响应拦截器成功的回调
- * 添加 axiosRequestCallback 代表请求拦截器成功的回调
+ * @desc axios 自定义配置
+ * @param {boolean} axiosDebounce 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消
+ * @param {MessageDuration} messageDuration 消息持续时间 默认为2000毫秒  number
+ * @param {MessagePosition} messagePosition 消息提示位置 默认为top-right
  */
-export declare type AxiosRequestConfigs = AxiosRequestConfig & SuccessStatusKeyAndsuccessStatusKeyValue & ErrorStatusKeyAnderrorStatusKeyValue & AxiosRequestContentType & MaskLayerOption & {
-    axiosDebounce?: boolean;
-    messageDuration?: MessageDuration;
-    messagePosition?: MessagePosition;
-    messageHoverStop?: boolean;
-    errorMessageKey?: string;
-    errorMessageDuration?: number;
-    errorMessagePosition?: 'left' | 'center' | 'right';
-    errorMessageValue?: string;
-    errorMessageHoverStop?: boolean;
-    successMessageKey?: string;
-    successMessageDuration?: number;
-    successMessagePosition?: 'left' | 'center' | 'right';
-    successMessageValue?: string;
-    successMessageHoverStop?: boolean;
-    /**
-     * 例如: 后端返回的数据是
-     *
-     * {
-     *  a: {
-     *       b:{
-     *          c:"我是c"
-     *         }
-     *     }
-     *  }
-     *
-     */
-    dataKey?: string;
-    axiosResponseCallback?: (axiosResponse: AxiosResponse) => void;
-    axiosRequestCallback?: (axiosRequestConfigs: AxiosRequestConfigs) => void;
+export declare type ConstomConfigs = {
+  contentType?:
+    | "application/json"
+    | "application/x-www-form-urlencoded"
+    | " multipart/form-data";
+  axiosDebounce?: boolean;
+  messageDuration?: MessageDuration;
+  messagePosition?: MessagePosition;
+  messageHoverStop?: boolean;
+  errorMessageKey?: string;
+  errorMessageDuration?: number;
+  errorMessagePosition?: "left" | "center" | "right";
+  errorMessageValue?: string;
+  errorMessageHoverStop?: boolean;
+  successMessageKey?: string;
+  successMessageDuration?: number;
+  successMessagePosition?: "left" | "center" | "right";
+  successMessageValue?: string;
+  successMessageHoverStop?: boolean;
+  dataKey?: string;
+  axiosRequestCallback?: (axiosRequestconfigs: AxiosRequestConfigs) => void;
+  axiosResponseCallback?: (axiosResponse: AxiosResponses) => void;
 };
 
-export declare type AxiosRequestContentType = {
-    contentType?: 'application/json' | 'application/x-www-form-urlencoded' | ' multipart/form-data';
+/**
+ * @desc axios 自定义配置
+ * @param {boolean} axiosDebounce 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消
+ * @param {MessageDuration} messageDuration 消息持续时间 默认为2000毫秒  number
+ * @param {MessagePosition} messagePosition 消息提示位置 默认为top-right
+ */
+declare type ConstomConfigs_2 = {
+  contentType?:
+    | "application/json"
+    | "application/x-www-form-urlencoded"
+    | " multipart/form-data";
+
+  /* 接口防抖 应用场景：同一个接口，同一个请求方式，同样的请求参数发起了多次数据请求，当第一次发起请求的接口没有返回数据之前，后续的接口都会被取消 */
+  axiosDebounce?: boolean;
+
+  /* 消息持续时间 默认为2000毫秒  number */
+  messageDuration?: MessageDuration;
+
+  /* 消息提示位置 默认为left 'left' | 'center' | 'right' */
+  messagePosition?: MessagePosition;
+
+  /* 鼠标悬停 消息组件不消失 boolean */
+  messageHoverStop?: boolean;
+
+  /* 错误消息字段所对应的key 默认undefined */
+  errorMessageKey?: string;
+
+  /* 错误消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置  */
+  errorMessageDuration?: number;
+
+  /* 错误消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置  */
+  errorMessagePosition?: "left" | "center" | "right";
+
+  /* 错误消息提示的自定义内容 优先级高于 errorMessageKey 所对应的内容 */
+  errorMessageValue?: string;
+
+  /* 鼠标悬停 错误消息组件不消失 */
+  errorMessageHoverStop?: boolean;
+
+  /* 成功消息字段所对应的key 默认undefind */
+  successMessageKey?: string;
+
+  /* 成功消息持续时间 如果没有配置 且配置了 messageDuration 属性 则执行 messageDuration 的配置 */
+  successMessageDuration?: number;
+
+  /* 成功消息提示的位置 如果没有配置 且配置了 messagePosition 属性 则执行 messagePosition 的配置 */
+  successMessagePosition?: "left" | "center" | "right";
+
+  /* 成功消息提示的自定义内容 优先级高于 successMessageKey 所对应的内容 */
+  successMessageValue?: string;
+
+  /* 鼠标悬停 错误消息组件不消失 */
+  successMessageHoverStop?: boolean;
+
+  /* 代表返回数据的key，支持a.b.c */
+  dataKey?: string;
+
+  /* 请求成功回调 用于全局拦截 */
+  axiosRequestCallback?: (axiosRequestconfigs: AxiosRequestConfigs) => void;
+
+  /* 拦截成功回调 用于全局拦截 */
+  axiosResponseCallback?: (axiosResponse: AxiosResponses) => void;
 };
 
-export declare type CreateAxios = (axiosRequestConfigs: AxiosRequestConfigs) => AxiosHelpers;
+export declare type CreateAxios = (
+  axiosRequestConfigs: AxiosRequestConfigs
+) => AxiosHelpers;
 
 /**
- * @param {AxiosRequestConfigs}initAxiosRequestConfig
- * @returns {AxiosHelpers} {}
- */
-export declare const createAxios: CreateAxios;
-
-/**
- * 错误 消息 配置
+ * @desc 错误 消息 配置
  * errorStatusKey 和 errorStatusValue 要么全部都有 要么一个没有
  */
-export declare type ErrorStatusKeyAnderrorStatusKeyValue = {
-    errorStatusKey?: never;
-    errorStatusValue?: never;
-} | {
-    errorStatusKey: string;
-    errorStatusValue: string | number | boolean | Array<string | number | boolean>;
-};
+export declare type ErrorStatusKeyValue =
+  | {
+      errorStatusKey?: never;
+      errorStatusValue?: never;
+    }
+  | {
+      errorStatusKey: string;
+      errorStatusValue: StatusValue;
+    };
+
+export declare type ParamsInDataHelper = <T = any, R = AxiosResponses<T>>(
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfigs
+) => Promise<R> | Promise<T>;
+
+export declare type ParamsInParamsHelper = <T = any, R = AxiosResponses<T>>(
+  url: string,
+  params?: any,
+  config?: AxiosRequestConfigs
+) => Promise<R> | Promise<T>;
+
+export declare type ParamsInParamsOrDataHelper = <
+  T = any,
+  R = AxiosResponses<T>
+>(
+  url: string,
+  params: { params?: any; data?: any },
+  config?: AxiosRequestConfigs
+) => Promise<R> | Promise<T>;
+
+export declare type StatusValue =
+  | string
+  | number
+  | boolean
+  | Array<string | number>;
+
+declare type StatusValue_2 = string | number | boolean | Array<string | number>;
 
 /**
- * 参数在data字段中的声明
- */
-export declare type ParamsInDataHelper = <T = any>(url: string, data?: any, config?: AxiosRequestConfigs) => Promise<T>;
-
-/**
- * 参数在params的声明
- */
-export declare type ParamsInParamsHelper = <T = any>(url: string, params?: any, config?: AxiosRequestConfigs) => Promise<T>;
-
-/**
- * 参数既可以在params也可以在data的声明
- */
-export declare type ParamsInParamsOrDataHelper = <T = any>(url: string, params: {
-    params?: any;
-    data?: any;
-}, config?: AxiosRequestConfigs) => Promise<T>;
-
-/**
- * 成功 消息 配置
+ * @desc 成功 消息 配置
  * successStatusKey 和 successStatusValue 要么全部都有 要么一个没有
  */
-export declare type SuccessStatusKeyAndsuccessStatusKeyValue = {
-    successStatusKey?: never;
-    successStatusValue?: never;
-} | {
-    successStatusKey: string;
-    successStatusValue: string | number | boolean | Array<string | number | boolean>;
-};
+export declare type SuccessStatusKeyValue =
+  | {
+      successStatusKey?: never;
+      successStatusValue?: never;
+    }
+  | {
+      successStatusKey: string;
+      successStatusValue: StatusValue;
+    };
 
-export { }
+export {};

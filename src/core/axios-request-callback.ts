@@ -1,88 +1,58 @@
-import { AxiosResponse } from "axios";
-import type { AxiosRequestConfigs } from "@/index";
 import { WebMaskLayer } from "web-mask-layer";
-/**
- * @desc axios 请求后成功的回调
- */
-export type AxiosResponseCallback = <T = any, R = AxiosResponse<T>>(
-  axiosResponse: AxiosResponse
-) => Promise<R> | Promise<T>;
-
-/**
- * axios 请求配置回调
- */
-export type AxiosRequestCallback = (
-  config: AxiosRequestConfigs
+import { AxiosDebounce } from "@/core/axios-debounce";
+import type { AxiosRequestConfigs } from "@/common-axios";
+export type OnFulfilled = (
+  axiosRequestConfigs: AxiosRequestConfigs
 ) => AxiosRequestConfigs;
-
-/**
- * @desc axios 请求前 请求后的错误回调 的声明
- */
-export type AxiosErrorCallback = (error: Error) => Promise<Error>;
-
-// axios  防抖
-import { AxiosDebounce } from "./axios-debounce";
-
-// 创建防抖实例
-const axiosDebounceInstance = new AxiosDebounce();
-
-/**
- * @desc 请求前成功回调
- * @param {AxiosRequestCallback} config
- * @returns {AxiosRequestCallback} config
- */
-export const axiosRequestCallback: AxiosRequestCallback = (config) => {
-  const {
-    axiosDebounce,
-    contentType,
-    axiosRequestCallback,
-    background,
-    color,
-    target,
-    customClass,
-    opacity,
-    text,
-  } = config;
-
-  if (axiosRequestCallback && typeof axiosRequestCallback === "function")
-    axiosRequestCallback(config);
-
-  // 先判断是否需要防抖 如果需要 需要防抖的话 如果接口被取消 就不再需要遮罩层
-  if (axiosDebounce) {
-    axiosDebounceInstance.handleAxiosDebounce(config);
-  }
-
-  // 创建遮罩层
-  if (text) {
-    const webMaskLayer = new WebMaskLayer();
-    const webMaskLayerOption = {
-      text,
+export type OnRejected = (error: Error) => Promise<Error>;
+export class AxiosRequestCallback {
+  // 创建防抖实例
+  static axiosDebounceInstance: AxiosDebounce = new AxiosDebounce();
+  static webMaskLayer = WebMaskLayer.getInstance();
+  /**
+   * @desc 请求前成功回调
+   * @param {AxiosRequestConfigs} axiosRequestConfigs
+   * @returns {AxiosRequestConfigs} axiosRequestConfigs
+   */
+  public static onFulfilled: OnFulfilled = (axiosRequestConfigs) => {
+    const {
+      axiosDebounce,
+      contentType,
+      axiosRequestCallback,
       background,
       color,
       target,
       customClass,
       opacity,
-    };
-
-    webMaskLayer.createLoading(webMaskLayerOption);
-  }
-
-  // 修改content-type
-  if (contentType) {
-    config.headers = {
-      ...config.headers,
-      "Content-Type": contentType,
-    };
-  }
-
-  return config;
-};
-
-/**
- * @desc 请求前错误回调
- * @param error 错误信息
- * @returns error
- */
-export const axiosRequestErrorCallback: AxiosErrorCallback = (error) => {
-  return Promise.reject(error);
-};
+      text,
+    } = axiosRequestConfigs;
+    if (axiosRequestCallback && typeof axiosRequestCallback === "function")
+      axiosRequestCallback(axiosRequestConfigs);
+    if (axiosDebounce)
+      this.axiosDebounceInstance.handleAxiosDebounce(axiosRequestConfigs);
+    if (text)
+      this.webMaskLayer.createLoading({
+        text,
+        background,
+        color,
+        target,
+        customClass,
+        opacity,
+      });
+    if (contentType)
+      axiosRequestConfigs.headers = {
+        ...axiosRequestConfigs.headers,
+        "Content-Type": contentType,
+      };
+    return axiosRequestConfigs;
+  };
+  /**
+   * @desc 请求前错误回调
+   * @param error 错误信息
+   * @returns error
+   */
+  public static onRejected: OnRejected = (error) => {
+    this.webMaskLayer.closeLoading();
+    return Promise.reject(error);
+  };
+}

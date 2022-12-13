@@ -1,27 +1,29 @@
 import axios from "axios";
 import type { AxiosInstance } from "axios";
-import { AxiosRequestConfigs } from "@/index";
-/**
- * @desc 创建axios实例
- * @param config
- * return {axios实例}
- */
-export type CreateAxiosInstance = (
-  config: AxiosRequestConfigs
+import { AxiosRequestConfigs } from "@/common-axios";
+
+export type CreateInstance = (
+  axiosRequestConfigs: AxiosRequestConfigs
 ) => AxiosInstance;
 
 /**
  * @desc 创建axios实例
- * @param {AxiosRequestConfigs} config
+ * @param {AxiosRequestConfigs} axiosRequestConfigs
  * return axios实例
  */
-export const createAxiosInstance: CreateAxiosInstance = (config) => {
-  return axios.create({
-    ...config,
-    // 默认开启携带cookie
-    withCredentials:
-      config && config.withCredentials !== undefined
-        ? config.withCredentials
-        : true,
-  });
-};
+export class CommonAxiosInstance {
+  static axiosInstance: AxiosInstance;
+  public static createInstance: CreateInstance = (axiosRequestConfigs) => {
+    if (!this.axiosInstance) {
+      const withCredentials =
+        axiosRequestConfigs && axiosRequestConfigs.withCredentials !== undefined
+          ? axiosRequestConfigs.withCredentials
+          : true;
+      this.axiosInstance = axios.create({
+        ...axiosRequestConfigs,
+        withCredentials,
+      });
+    }
+    return this.axiosInstance;
+  };
+}

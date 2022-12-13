@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
+      "@/*": ["./src/*"]
     },
     "target": "es5",
-    "lib": [
-      "ES2016",
-      "DOM"
-    ],
+    "lib": ["ES2016", "DOM"],
     "jsx": "preserve",
     "module": "ES2015",
     // "rootDir": "./",
@@ -17,9 +12,11 @@
     "declaration": true,
     "downlevelIteration": true,
     "declarationDir": "./temp",
-   "esModuleInterop": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/*"],
+  "exclude": ["./temp"]
 }
