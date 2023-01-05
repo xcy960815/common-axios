@@ -1,5 +1,5 @@
-import { AxiosRequestConfigs } from "@/common-axios";
-import { utils } from "@/utils";
+import { AxiosRequestConfigs } from "../common-axios";
+import { utils } from "../utils";
 import axios from "axios";
 import type { Canceler } from "axios";
 

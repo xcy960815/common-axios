@@ -1,5 +1,5 @@
-import { CommonAxios } from "common-axios";
-const commonAxios = CommonAxios.createAxios({
+import { createAxios } from "common-axios";
+const commonAxios = createAxios({
   baseURL: "http://localhost:3000/api",
   withCredentials: true,
 });

@@ -3,14 +3,13 @@ import type {
   ParamsInDataHelper,
   ParamsInParamsHelper,
   ParamsInParamsOrDataHelper,
-} from "@/core/create-helper";
-import { CommonAxiosInstance } from "@/core/create-axios";
-import { CreateHelper } from "@/core/create-helper";
-import { AxiosRequestCallback } from "@/core/axios-request-callback";
-import { AxiosResponseCallback } from "@/core/axios-response-callback";
+} from "./core/create-helper";
+import { CommonAxiosInstance } from "./core/create-axios";
+import { CreateHelper } from "./core/create-helper";
+import { AxiosRequestCallback } from "./core/axios-request-callback";
+import { AxiosResponseCallback } from "./core/axios-response-callback";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { MessageDuration, MessagePosition } from "web-message";
-import { MaskLayerOption } from "web-mask-layer";
 
 export type StatusValue = string | number | boolean | Array<string | number>;
 
@@ -109,7 +108,6 @@ export type ConstomConfigs = {
 export type AxiosRequestConfigs = AxiosRequestConfig &
   SuccessStatusKeyValue &
   ErrorStatusKeyValue &
-  MaskLayerOption &
   ConstomConfigs;
 
 export interface AxiosResponses<T = any> extends AxiosResponse<T> {
@@ -144,39 +142,43 @@ export type CreateAxios = (
   axiosRequestConfigs: AxiosRequestConfigs
 ) => AxiosHelpers;
 
-export class CommonAxios {
+class CommonAxios {
   static axiosInstance: AxiosInstance;
   public static createAxios: CreateAxios = (initAxiosConfig) => {
-    const axiosInstance = CommonAxiosInstance.createInstance(initAxiosConfig);
-    axiosInstance.interceptors.request.use(
+    this.axiosInstance = CommonAxiosInstance.createInstance(initAxiosConfig);
+
+    this.axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfigs) => AxiosRequestCallback.onFulfilled(config),
       (error) => AxiosRequestCallback.onRejected(error)
     );
-    axiosInstance.interceptors.response.use(
+
+    this.axiosInstance.interceptors.response.use(
       (axiosResponse) => AxiosResponseCallback.onFulfilled(axiosResponse),
       (error) => AxiosResponseCallback.onRejected(error)
     );
 
     return {
-      get: CreateHelper.createParamsInParamsHelper(axiosInstance, "get"),
+      get: CreateHelper.createParamsInParamsHelper(this.axiosInstance, "get"),
 
-      head: CreateHelper.createParamsInParamsHelper(axiosInstance, "head"),
+      head: CreateHelper.createParamsInParamsHelper(this.axiosInstance, "head"),
 
       delete: CreateHelper.createParamsInParamsOrDataHelper(
-        axiosInstance,
+        this.axiosInstance,
         "delete"
       ),
 
       options: CreateHelper.createParamsInParamsOrDataHelper(
-        axiosInstance,
+        this.axiosInstance,
         "options"
       ),
 
-      post: CreateHelper.createParamsInDataHelper(axiosInstance, "post"),
+      post: CreateHelper.createParamsInDataHelper(this.axiosInstance, "post"),
 
-      put: CreateHelper.createParamsInDataHelper(axiosInstance, "put"),
+      put: CreateHelper.createParamsInDataHelper(this.axiosInstance, "put"),
 
-      patch: CreateHelper.createParamsInDataHelper(axiosInstance, "patch"),
+      patch: CreateHelper.createParamsInDataHelper(this.axiosInstance, "patch"),
     };
   };
 }
+
+export const createAxios = CommonAxios.createAxios;

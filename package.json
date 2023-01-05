@@ -1,7 +1,7 @@
 {
   "name": "common-axios",
-  "version": "0.5.01",
-  "description": "基于axios重新封装的axios，支持原生遮罩层、原生message组件，代码比较轻量",
+  "version": "0.5.2",
+  "description": "基于axios重新封装的axios，支持原生message组件，代码比较轻量",
   "main": "dist/common-axios.umd.js",
   "module": "dist/common-axios.esm.js",
   "typings": "types/common-axios.d.ts",
@@ -17,9 +17,7 @@
     "common-axios",
     "axios",
     "message",
-    "web-message",
-    "mask-layer",
-    "web-mask-layer"
+    "web-message"
   ],
   "repository": {
     "type": "git",
@@ -32,12 +30,11 @@
   "license": "MIT",
   "peerDependencies": {
     "axios": "^0.21.4",
-    "web-mask-layer": "^0.0.8",
     "web-message": "0.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
-    "@microsoft/api-extractor": "^7.33.7",
+    "@microsoft/api-extractor": "7.33.6",
     "@rollup/plugin-alias": "^3.1.9",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -67,7 +64,6 @@
     "typescript": "^4.5.5",
     "vcm-cli": "^1.0.5",
     "vue": "3.2.13",
-    "web-mask-layer": "^0.1.0",
     "web-message": "^0.0.9"
   },
   "husky": {

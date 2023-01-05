@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "target": "es5",
     "lib": ["ES2016", "DOM"],
     "jsx": "preserve",

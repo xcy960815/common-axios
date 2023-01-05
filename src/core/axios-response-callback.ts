@@ -1,5 +1,4 @@
-import { AxiosResponses } from "@/common-axios";
-import { WebMaskLayer } from "web-mask-layer";
+import { AxiosResponses } from "../common-axios";
 
 export type OnFulfilled = <T = any, R = AxiosResponses<T>>(
   axiosResponse: AxiosResponses
@@ -9,7 +8,7 @@ export type OnRejected = (error: Error) => Promise<Error>;
 
 import axios from "axios";
 
-import { utils } from "@/utils";
+import { utils } from "../utils";
 
 export class AxiosResponseCallback {
   /**
@@ -18,8 +17,6 @@ export class AxiosResponseCallback {
    * @returns
    */
   static onFulfilled: OnFulfilled = (axiosResponse) => {
-    const webMaskLayer = WebMaskLayer.getInstance();
-    webMaskLayer.closeLoading();
     // 获取配置
     const {
       messagePosition,

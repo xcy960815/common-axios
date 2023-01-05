@@ -2,7 +2,6 @@ import typescript from "rollup-plugin-typescript2";
 import postcss from "rollup-plugin-postcss";
 import autoprefixer from "autoprefixer";
 import { terser } from "rollup-plugin-terser";
-import path from "path";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import nodePolyfills from "rollup-plugin-polyfill-node";
 import { babel } from "@rollup/plugin-babel";
@@ -10,7 +9,6 @@ import del from "rollup-plugin-delete";
 import json from "@rollup/plugin-json";
 import commonjs from "@rollup/plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
-import alias from "@rollup/plugin-alias";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -56,7 +54,6 @@ const initConfig = () => {
         globals: {
           axios: "axios",
           "web-message": "web-message",
-          "web-mask-layer": "web-mask-layer",
         },
       },
       {
@@ -66,7 +63,6 @@ const initConfig = () => {
         globals: {
           axios: "axios",
           "web-message": "web-message",
-          "web-mask-layer": "web-mask-layer",
         },
       }
     );
@@ -82,14 +78,7 @@ const initConfig = () => {
         del({
           targets: ["dist"],
         }),
-      alias({
-        entries: [
-          {
-            find: "@",
-            replacement: path.resolve(__dirname, "./src"),
-          },
-        ],
-      }),
+
       babel({
         skipPreflightCheck: true,
         exclude: "node_modules/**",

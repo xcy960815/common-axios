@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { AxiosInstance } from "axios";
-import { AxiosRequestConfigs } from "@/common-axios";
+import { AxiosRequestConfigs } from "../common-axios";
 
 export type CreateInstance = (
   axiosRequestConfigs: AxiosRequestConfigs

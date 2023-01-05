@@ -3,7 +3,7 @@ import type {
   AxiosRequestConfigs,
   AxiosMethods,
   AxiosResponses,
-} from "@/common-axios";
+} from "../common-axios";
 export type ParamsInDataHelper = <T = any, R = AxiosResponses<T>>(
   url: string,
   data?: any,

@@ -1,15 +1,15 @@
-import { CommonAxios } from "common-axios";
+import { createAxios } from "common-axios";
 
 // 创建common-commonAxios 实例
-const commonAxios = CommonAxios.createAxios({
-  baseURL: "http://localhost:3000/api",
+const commonAxios = createAxios({
+  baseURL: "http://localhost:3000",
   withCredentials: true,
 });
 
 export const testMessage = () => {
   // 测试请求成功接口，属性
   const handleGetSusscessApi = async () => {
-    const result = await commonAxios.get("/test-message/success", null, {
+    const result = await commonAxios.get("/departments-list", null, {
       successStatusKey: "code",
       successStatusValue: [200],
       successMessageKey: "message",
