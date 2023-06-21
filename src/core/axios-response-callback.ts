@@ -1,22 +1,17 @@
-import { AxiosResponses } from "../common-axios";
-
-export type OnFulfilled = <T = any, R = AxiosResponses<T>>(
-  axiosResponse: AxiosResponses
-) => Promise<R> | Promise<T>;
-
-export type OnRejected = (error: Error) => Promise<Error>;
-
 import axios from "axios";
-
+import type { CommonAxios } from "../types";
 import { utils } from "../utils";
 
-export class AxiosResponseCallback {
+export class CommonAxiosResponseCallback {
   /**
    * @desc 请求返回成功回调
-   * @param {AxiosResponse} axiosResponse
+   * @param {AxiosResponse} response
    * @returns
    */
-  static onFulfilled: OnFulfilled = (axiosResponse) => {
+  //
+  static CommonAxiosOnFulfilled: CommonAxios.ResponseOnFulfilled = (
+    response
+  ) => {
     // 获取配置
     const {
       messagePosition,
@@ -24,7 +19,6 @@ export class AxiosResponseCallback {
       errorStatusKey,
       errorStatusValue,
       messageHoverStop,
-      dataKey,
       errorMessageKey,
       errorMessageDuration,
       errorMessagePosition,
@@ -38,22 +32,25 @@ export class AxiosResponseCallback {
       successMessageValue,
       successMessageHoverStop,
       axiosResponseCallback,
-    } = axiosResponse.config;
+    } = response.config;
+    const { data } = response;
 
     // 执行自定义事件
-    if (axiosResponseCallback && typeof axiosResponseCallback == "function")
-      axiosResponseCallback(axiosResponse);
+    if (axiosResponseCallback && typeof axiosResponseCallback == "function") {
+      axiosResponseCallback(response);
+    }
 
     // 处理 错误 提示
-    if (
+    const checkError =
       (errorStatusKey && errorStatusValue) ||
       (Array.isArray(errorStatusValue) &&
         errorStatusKey &&
-        errorStatusValue.length)
-    ) {
-      const _errorStatusKeyValue = utils.getValueByKeyInObject<string | number>(
+        errorStatusValue.length);
+
+    if (checkError) {
+      const _errorStatusKeyValue = utils.getValueByKey<string | number>(
         errorStatusKey,
-        axiosResponse.data
+        data
       );
       if (errorMessageKey) {
         const isError =
@@ -62,9 +59,9 @@ export class AxiosResponseCallback {
           errorStatusValue === _errorStatusKeyValue;
         if (isError) {
           // 获取消息内容
-          const messageValue = utils.getValueByKeyInObject<string>(
+          const messageValue = utils.getValueByKey<string>(
             errorMessageKey,
-            axiosResponse.data
+            response.data
           );
           utils.outputMessage({
             messageType: "error",
@@ -79,16 +76,17 @@ export class AxiosResponseCallback {
     }
 
     // 处理 成功 提示
-    if (
+    const checkSuccess =
       (successStatusKey && successStatusValue) ||
       (Array.isArray(successStatusValue) &&
         successStatusKey &&
-        successStatusValue.length)
-    ) {
+        successStatusValue.length);
+    if (checkSuccess) {
       // 获取代表成功的值
-      const _successStatusKeyValue = utils.getValueByKeyInObject<
-        string | number
-      >(successStatusKey, axiosResponse.data);
+      const _successStatusKeyValue = utils.getValueByKey<string | number>(
+        successStatusKey,
+        response.data
+      );
       const isSuccess =
         (Array.isArray(successStatusValue) &&
           successStatusValue.includes(_successStatusKeyValue)) ||
@@ -96,9 +94,9 @@ export class AxiosResponseCallback {
       if (isSuccess) {
         if (successMessageKey) {
           // 获取消息内容
-          const messageValue = utils.getValueByKeyInObject<string>(
+          const messageValue = utils.getValueByKey<string>(
             successMessageKey,
-            axiosResponse.data
+            response.data
           );
           utils.outputMessage({
             messageType: "success",
@@ -112,15 +110,7 @@ export class AxiosResponseCallback {
         }
       }
     }
-
-    // 处理返回数据
-    if (dataKey) {
-      return Promise.resolve(
-        utils.getValueByKeyInObject(dataKey, axiosResponse.data)
-      );
-    } else {
-      return Promise.resolve(axiosResponse.data);
-    }
+    return Promise.resolve(response);
   };
 
   /**
@@ -128,7 +118,7 @@ export class AxiosResponseCallback {
    * @param {Error} error
    * @returns void
    */
-  static onRejected: OnRejected = (error) => {
+  static CommonAxiosOnRejected: CommonAxios.ResponseOnRejected = (error) => {
     if (axios.isCancel(error)) {
       utils.outputMessage({
         messageType: "error",

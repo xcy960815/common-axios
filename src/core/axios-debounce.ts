@@ -1,20 +1,10 @@
-import { AxiosRequestConfigs } from "../common-axios";
 import { utils } from "../utils";
 import axios from "axios";
 import type { Canceler } from "axios";
+import type { CommonAxios } from "../types";
 
-type AxiosQueue = Map<string, Canceler>;
-type HandleCreateAxiosKey = (
-  axiosRequestConfigs: AxiosRequestConfigs
-) => string;
-type HandleAddAxiosQueue = (axiosRequestConfigs: AxiosRequestConfigs) => void;
-type HandleRemoveAxiosQueue = (
-  axiosRequestConfigs: AxiosRequestConfigs
-) => void;
-type HandleAxiosDebounce = (axiosRequestConfigs: AxiosRequestConfigs) => void;
-type HandleClearPending = () => void;
 export class AxiosDebounce {
-  axiosQueue: AxiosQueue;
+  axiosQueue: CommonAxios.CommonAxiosQueue;
   constructor() {
     this.axiosQueue = new Map();
   }
@@ -23,7 +13,9 @@ export class AxiosDebounce {
    * @param {AxiosRequestConfigs} axiosRequestConfigs
    * @returns string
    */
-  handleCreateAxiosKey: HandleCreateAxiosKey = (axiosRequestConfigs) => {
+  handleCreateAxiosKey: CommonAxios.HandleCreateAxiosKey = (
+    axiosRequestConfigs
+  ) => {
     // 生成 关于这个axios的key 所有key的生成规则都一样
     return [
       axiosRequestConfigs.method,
@@ -38,7 +30,9 @@ export class AxiosDebounce {
    * @param {AxiosRequestConfigs} axiosRequestConfigs
    * @returns void
    */
-  handleAddAxiosQueue: HandleAddAxiosQueue = (axiosRequestConfigs) => {
+  handleAddAxiosQueue: CommonAxios.HandleAddAxiosQueue = (
+    axiosRequestConfigs
+  ) => {
     const key = this.handleCreateAxiosKey(axiosRequestConfigs);
     axiosRequestConfigs.cancelToken =
       axiosRequestConfigs.cancelToken ||
@@ -52,7 +46,9 @@ export class AxiosDebounce {
    * @param {AxiosRequestConfigs} axiosRequestConfigs
    * @returns void
    */
-  handleRemoveAxiosQueue: HandleRemoveAxiosQueue = (axiosRequestConfigs) => {
+  handleRemoveAxiosQueue: CommonAxios.HandleRemoveAxiosQueue = (
+    axiosRequestConfigs
+  ) => {
     const key = this.handleCreateAxiosKey(axiosRequestConfigs);
     if (this.axiosQueue.has(key)) {
       // 如果在 axiosQueue 中存在当前请求标识，需要取消当前请求，并且移除
@@ -66,7 +62,9 @@ export class AxiosDebounce {
    * @param} axiosRequestConfigs
    * @returns void
    */
-  handleAxiosDebounce: HandleAxiosDebounce = (axiosRequestConfigs) => {
+  handleAxiosDebounce: CommonAxios.HandleAxiosDebounce = (
+    axiosRequestConfigs
+  ) => {
     // 在请求开始前，对之前的请求做检查取消操作
     this.handleRemoveAxiosQueue(axiosRequestConfigs);
     // 将当前请求添加到 pending 中
@@ -77,7 +75,7 @@ export class AxiosDebounce {
    * @desc 清空队列
    * @returns void
    */
-  handleClearPending: HandleClearPending = () => {
+  handleClearPending: CommonAxios.HandleClearPending = () => {
     for (const [url, cancel] of this.axiosQueue) {
       cancel(url);
     }

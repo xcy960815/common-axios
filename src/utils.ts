@@ -4,23 +4,8 @@
  * @author xuchongyu
  * @license MIT
  */
+import type { Stringify, GetValueByKey, OutputMessage } from "./types";
 import { WebMessage } from "web-message";
-import type {
-  MessagePosition,
-  MessageDuration,
-  MessageType,
-} from "web-message";
-type Stringify = (params: Array<string>) => string;
-type Object = { [key: string]: any };
-type GetValueByKeyInObject = <T = any>(key: keyof Object, object: Object) => T;
-type OutputMessageParams = {
-  messageType: MessageType;
-  message: string;
-  messagePosition: MessagePosition;
-  messageDuration?: MessageDuration;
-  messageHoverStop?: boolean;
-};
-type OutputMessage = (outputMessageParams: OutputMessageParams) => void;
 
 export class utils {
   // 创建message实例
@@ -39,29 +24,22 @@ export class utils {
     }
     return search.join("&");
   };
+
   /**
    * @desc 通过key查找object里面的值
    * @param key object的属性
    * @param object 数据
    * @returns object[key]
-   * @example
-   * utils.getValueByKeyInObject('a', { a: { b: { c: 1 } } })
-   * utils.getValueByKeyInObject('a.b', { a: { b: { c: 1 } } })
-   * utils.getValueByKeyInObject('a.b.c', { a: { b: { c: 1 } } })
    */
-  static getValueByKeyInObject: GetValueByKeyInObject = (key, object) => {
-    if (key.toString().trim() === "") return object;
+  static getValueByKey: GetValueByKey = (key, object) => {
+    if (!key) return object[key];
     if (key.toString().includes(".")) {
       const keys: Array<string> = key.toString().split(".");
       let index = 0;
-      let temValue: any;
+      let temValue: any = object;
       while (index < keys.length) {
         const key = keys[index];
-        if (!temValue) {
-          temValue = object[key];
-        } else {
-          temValue = temValue[key];
-        }
+        temValue = temValue[key];
         index++;
       }
       return temValue;

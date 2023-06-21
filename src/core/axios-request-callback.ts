@@ -1,25 +1,23 @@
 import { AxiosDebounce } from "../core/axios-debounce";
-import type { AxiosRequestConfigs } from "../common-axios";
-export type OnFulfilled = (
-  axiosRequestConfigs: AxiosRequestConfigs
-) => AxiosRequestConfigs;
-export type OnRejected = (error: Error) => Promise<Error>;
-export class AxiosRequestCallback {
+import type { CommonAxios } from "../types";
+export class CommonAxiosRequestCallback {
   // 创建防抖实例
-  static axiosDebounceInstance: AxiosDebounce = new AxiosDebounce();
+  static axiosDebounce: AxiosDebounce = new AxiosDebounce();
   /**
    * @desc 请求前成功回调
    * @param {AxiosRequestConfigs} axiosRequestConfigs
    * @returns {AxiosRequestConfigs} axiosRequestConfigs
    */
-  public static onFulfilled: OnFulfilled = (axiosRequestConfigs) => {
+  public static CommonAxiosOnFulfilled: CommonAxios.RequestOnFulfilled = (
+    axiosRequestConfigs
+  ) => {
     const { axiosDebounce, contentType, axiosRequestCallback } =
       axiosRequestConfigs;
 
     if (axiosRequestCallback && typeof axiosRequestCallback === "function")
       axiosRequestCallback(axiosRequestConfigs);
     if (axiosDebounce)
-      this.axiosDebounceInstance.handleAxiosDebounce(axiosRequestConfigs);
+      this.axiosDebounce.handleAxiosDebounce(axiosRequestConfigs);
     if (contentType)
       axiosRequestConfigs.headers = {
         ...axiosRequestConfigs.headers,
@@ -32,7 +30,9 @@ export class AxiosRequestCallback {
    * @param error 错误信息
    * @returns error
    */
-  public static onRejected: OnRejected = (error) => {
+  public static CommonAxiosOnRejected: CommonAxios.RequestOnRejected = (
+    error
+  ) => {
     return Promise.reject(error);
   };
 }

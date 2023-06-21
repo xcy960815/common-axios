@@ -1,22 +1,25 @@
 import { createAxios } from "common-axios";
 const commonAxios = createAxios({
-  baseURL: "http://localhost:3000/api",
   withCredentials: true,
 });
 
 export const testDebounce = () => {
-  const handleGetDebounceApi = () => {
-    commonAxios.get("/test-debounce/", null, {
+  const handleTestDebounce = () => {
+    commonAxios.get("/api/test-debounce", null, {
       axiosDebounce: true,
+      messageHoverStop: true,
+      messageDuration: 2000,
     });
-    commonAxios.get("/test-debounce/", null, {
+    commonAxios.get("/api/test-debounce", null, {
       axiosDebounce: true,
+      messageHoverStop: true,
     });
-    commonAxios.get("/test-debounce/", null, {
+    commonAxios.get("/api/test-debounce", null, {
       axiosDebounce: true,
+      messageHoverStop: true,
     });
   };
   return {
-    handleGetDebounceApi,
+    handleTestDebounce,
   };
 };
